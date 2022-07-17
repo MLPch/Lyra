@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 public class MemberJoinEvent extends ListenerAdapter {
 
@@ -29,12 +28,9 @@ public class MemberJoinEvent extends ListenerAdapter {
         TextChannel channel = event.getGuild().getTextChannelById(joinAndLeaveChannel);
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.addField("Добро пожаловать в лучшее место!",
-                "Пожалуйста, посети канал <#"
-                        + vyborKomnatChannel
-                        + "> для выбора"
-                        + " контента который ты хочешь видеть или для создания собственного канала. По любым вопросам ты можешь обращаться к "
-                        + Objects.requireNonNull(event.getGuild().getRoleById(736492288171048961L)).getAsMention()  + "!", true);
+        eb.addField("Добро пожаловать!",
+                "Будь хорошей пони и не забудь посетить  канал <#" + vyborKomnatChannel + "> для выбора" +
+                        " контента который ты хочешь видеть или для создания собственного канала!", true);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(img);
         eb.setTimestamp(OffsetDateTime.now());

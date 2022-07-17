@@ -66,9 +66,7 @@ public class OfftopDeleteEvent extends ListenerAdapter {
 
         if ((evt.getAuthor().getIdLong() == selfUser) &&
                 (evt.getMessage().getContentRaw().contains("Внимание")) &&
-                (!evt.getMessage().getEmbeds().isEmpty()) &&
-                (evt.getMessage().getAuthor().isBot())) {
-
+                (!evt.getMessage().getEmbeds().isEmpty())) {
             try {
                 Thread.sleep(offtopDeleteEvent);
             } catch (InterruptedException e) {
