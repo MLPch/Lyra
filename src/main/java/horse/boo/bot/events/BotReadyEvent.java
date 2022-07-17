@@ -23,17 +23,12 @@ public class BotReadyEvent extends ListenerAdapter {
     public void onReady(net.dv8tion.jda.api.events.@NotNull ReadyEvent event) {
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Последнее обновление: 25.01.2022");
-        eb.addField("Что нового:", "Добавлена команда\"/lyrahelp\": Выводит в ответ рамку с инструкцией " +
-                        "по эксплуатации функции уведомлений." +
-                        "\n--Добавлена команда\"/lyrahelpdetail\": Выводит в ответ рамку с инструкцией по эксплуатации" +
-                        " функции уведомлений, но в этом случае для тех самых непонятливых." +
-                        "\n--Удаляющие реакции изменены на (" + oftEmoteFull + ")." +
-                        "\n--Список обновлений теперь не удаляется и постится в <#" + botReadyChannel + ">" +
-                        "\n--Уведомления об удалении сообщения теперь удаляются через 15 секунд." +
+        eb.setTitle("Последнее обновление: 12.05.2022");
+        eb.addField("Что нового:", "\n--Изменены приветствие и прощание." +
+                        "\n--Кол-во необходимых для удаления реакций теперь равно четырём(4)." +
                         "\n--Баги превращены в фичи."
                 , true);
-        eb.setFooter(botName + "_Ver: 4.2.4");
+        eb.setFooter(botName + "_Ver: 4.3.6");
         eb.setColor(Color.GREEN);
         Objects.requireNonNull(event.getJDA().getTextChannelById(botReadyChannel)).sendMessage(eb.build()).queue();
     }

@@ -26,7 +26,7 @@ public class MemberLeaveEvent extends ListenerAdapter {
         TextChannel channel = event.getGuild().getTextChannelById(joinAndLeaveChannel);
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.addField("Может это и к лучшему?", "", true);
+        eb.addField("Ну ушёл и ушёл.", "", true);
         eb.setColor(Color.black);
         eb.setThumbnail(img);
         eb.setTimestamp(OffsetDateTime.now());
@@ -40,7 +40,7 @@ public class MemberLeaveEvent extends ListenerAdapter {
                 e.printStackTrace();
             }
             assert channel != null;
-            channel.sendMessage("Нас покинул " + ping + "!").setEmbeds(eb.build()).queue();
+            channel.sendMessage("Нас покинул " + user.getName() + "(" +user.getAsMention()+ ")!").setEmbeds(eb.build()).queue();
             stopped = false;
         }
 
