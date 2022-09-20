@@ -11,7 +11,7 @@ public class InitialSetupEvent extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message msg = event.getMessage();
         if (msg.getContentRaw().equals("/lyrastart")) {
-event.getChannel().getHistory().getRetrievedHistory().get(1).getAuthor().getId();
+            event.getChannel().getHistory().getRetrievedHistory().get(1).getAuthor().getId();
 
         }
     }

@@ -34,8 +34,7 @@ public class OfftopDeleteEvent extends ListenerAdapter {
         User author = msg.getAuthor();
 
         for (MessageReaction react : msg.getReactions()) {
-            if (!(react.getReactionEmote().isEmoji()) &&
-                    react.getReactionEmote().getEmote().getIdLong() == oftEmote &&
+            if (react.getEmoji().asCustom().getIdLong() == oftEmote &&
                     (!(author.getIdLong() == selfUser)) &&
                     react.getCount() >= oftCount) {
                 msg.delete().complete();
@@ -55,7 +54,7 @@ public class OfftopDeleteEvent extends ListenerAdapter {
 
 
                 event.getChannel().sendMessage("Внимание " + ping + "!\n").setEmbeds(eb.build()).complete();
-                author.openPrivateChannel().queue(channel -> channel.sendMessage(eb.build()).complete());
+                author.openPrivateChannel().queue(channel -> channel.sendMessageEmbeds(eb.build()).complete());
             }
         }
     }

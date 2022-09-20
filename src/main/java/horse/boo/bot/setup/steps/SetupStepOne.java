@@ -3,6 +3,8 @@ package horse.boo.bot.setup.steps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +27,7 @@ public class SetupStepOne extends ListenerAdapter {
 //            for (int i = 0; i < 30; i++) {
 //                channel.sendMessage("Param" + i + " = []").queue();
 //            }
-            for (Member mem : guild.getDefaultChannel().getMembers()){
+            for (Member mem : guild.getDefaultChannel().getMembers()) {
                 channel.sendMessage(mem.getUser().toString()).queue();
             }
         }

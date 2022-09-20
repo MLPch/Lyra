@@ -18,7 +18,7 @@ import java.util.List;
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 
 @Configuration
-@PropertySource("classpath:lyra.properties")
+@PropertySource("classpath:test.properties")
 public class BotConfig {
 
     @Value("${bot.token}")
@@ -27,11 +27,13 @@ public class BotConfig {
     public static JDABuilder jda;
 
     @Bean
-    public JDA jdaBuilder() throws LoginException {
+    public JDA jdaBuilder() {
         List<GatewayIntent> intents = List.of(GUILD_MESSAGES,
                 GUILD_MESSAGE_REACTIONS,
-                GUILD_EMOJIS,
                 GUILD_INVITES,
+                GUILD_WEBHOOKS,
+                GUILD_BANS,
+                GUILD_EMOJIS_AND_STICKERS,
                 GUILD_VOICE_STATES,
                 GUILD_MESSAGE_REACTIONS,
                 DIRECT_MESSAGE_REACTIONS,

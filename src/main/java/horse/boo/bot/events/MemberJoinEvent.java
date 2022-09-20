@@ -2,7 +2,7 @@ package horse.boo.bot.events;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class MemberJoinEvent extends ListenerAdapter {
                         + vyborKomnatChannel
                         + "> для выбора"
                         + " контента который ты хочешь видеть или для создания собственного канала. По любым вопросам ты можешь обращаться к "
-                        + Objects.requireNonNull(event.getGuild().getRoleById(736492288171048961L)).getAsMention()  + "!", true);
+                        + Objects.requireNonNull(event.getGuild().getRoleById(736492288171048961L)).getAsMention() + "!", true);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(img);
         eb.setTimestamp(OffsetDateTime.now());

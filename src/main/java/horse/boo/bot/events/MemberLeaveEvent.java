@@ -1,8 +1,9 @@
 package horse.boo.bot.events;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +41,7 @@ public class MemberLeaveEvent extends ListenerAdapter {
                 e.printStackTrace();
             }
             assert channel != null;
-            channel.sendMessage("Нас покинул " + user.getName() + "(" +user.getAsMention()+ ")!").setEmbeds(eb.build()).queue();
+            channel.sendMessage("Нас покинул " + user.getName() + "(" + user.getAsMention() + ")!").setEmbeds(eb.build()).queue();
             stopped = false;
         }
 

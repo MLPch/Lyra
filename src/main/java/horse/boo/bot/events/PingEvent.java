@@ -1,7 +1,8 @@
 package horse.boo.bot.events;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ public class PingEvent extends ListenerAdapter {
                     });
         } else if ((msg.getContentRaw().equals("/lyraping")) &&
                 !(msg.getAuthor().getIdLong() == 320332718921482241L)) {
-            msg.addReaction("❌").complete();
+            msg.addReaction(Emoji.fromUnicode("❌")).complete();
         }
     }
 }

@@ -30,6 +30,6 @@ public class BotReadyEvent extends ListenerAdapter {
                 , true);
         eb.setFooter(botName + "_Ver: 4.3.6");
         eb.setColor(Color.GREEN);
-        Objects.requireNonNull(event.getJDA().getTextChannelById(botReadyChannel)).sendMessage(eb.build()).queue();
+        Objects.requireNonNull(event.getJDA().getTextChannelById(botReadyChannel)).sendMessageEmbeds(eb.build()).queue();
     }
 }
