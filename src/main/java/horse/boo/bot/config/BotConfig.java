@@ -1,6 +1,9 @@
 package horse.boo.bot.config;
 
 import horse.boo.bot.events.*;
+import horse.boo.bot.events.SlashCommandEvent;
+import horse.boo.bot.setup.InitialSetupEvent;
+import horse.boo.bot.setup.steps.SetupStepOne;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -12,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.security.auth.login.LoginException;
 import java.util.List;
 
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
@@ -29,13 +31,13 @@ public class BotConfig {
     @Bean
     public JDA jdaBuilder() {
         List<GatewayIntent> intents = List.of(GUILD_MESSAGES,
+                MESSAGE_CONTENT,
                 GUILD_MESSAGE_REACTIONS,
                 GUILD_INVITES,
                 GUILD_WEBHOOKS,
                 GUILD_BANS,
                 GUILD_EMOJIS_AND_STICKERS,
                 GUILD_VOICE_STATES,
-                GUILD_MESSAGE_REACTIONS,
                 DIRECT_MESSAGE_REACTIONS,
                 GUILD_MESSAGE_TYPING,
                 GUILD_MEMBERS,
@@ -54,9 +56,12 @@ public class BotConfig {
         jda.addEventListeners(addReactionOnPostEvent());                    // Подписка на ивент (триггер)
         jda.addEventListeners(removeReactionOnPostEvent());                 // Подписка на ивент (исполнитель)
         jda.addEventListeners(helpEvent());                                 // Правила использования подписки на ивент
-
+        jda.addEventListeners(slashCommandEvent());
+        jda.addEventListeners(initialSetupEvent());
+        jda.addEventListeners(setupStepOne());
         return jda.build();
     }
+
 
     @Bean
     public BotReadyEvent botReadyEvent() {
@@ -98,4 +103,16 @@ public class BotConfig {
         return new HelpEvent();
     }
 
+    @Bean
+    public SlashCommandEvent slashCommandEvent() {
+        return new SlashCommandEvent();
+    }
+    @Bean
+    public InitialSetupEvent initialSetupEvent() {
+        return new InitialSetupEvent();
+    }
+    @Bean
+    public SetupStepOne setupStepOne() {
+        return new SetupStepOne();
+    }
 }
