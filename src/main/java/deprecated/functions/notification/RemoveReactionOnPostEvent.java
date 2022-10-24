@@ -1,4 +1,4 @@
-package horse.boo.bot.deprecated.functions.notification;
+package deprecated.functions.notification;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;

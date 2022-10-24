@@ -1,5 +1,6 @@
 package horse.boo.bot.setup;
 
+import horse.boo.bot.setup.config.BotSystemChannelService;
 import horse.boo.bot.setup.config.GuildConfigService;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.Guild;
@@ -9,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class InitialSetupEvent extends ListenerAdapter {
-    GuildConfigService guildConfigService = new GuildConfigService();
+    GuildConfigService gcs = new GuildConfigService();
 
     public InitialSetupEvent() {
     }
@@ -23,14 +24,9 @@ public class InitialSetupEvent extends ListenerAdapter {
         Message msg = event.getMessage();
         if (msg.getContentRaw().equals("/lyrastart")) {
             System.out.println("lyrastart");
-            var cfg = guildConfigService.getActualGuildConfig(guild);
-            cfg.setBotId("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-            guildConfigService.updateGuildConfigMessage(guild, cfg);
-
-            System.out.println(cfg.getBotId());
-
-            System.out.println(guildConfigService.getActualGuildConfig(guild).getBotName());
+            var cfg = gcs.getActualGuildConfig(guild);
+            cfg.setBotId("cx235r2xc3x");
+            gcs.updateGuildConfigMessage(guild, cfg);
 
         }
     }

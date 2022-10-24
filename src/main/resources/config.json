@@ -1,60 +1,12 @@
 {
-    "variables": {
-        "bot": {
-            "name": "kek",
-            "id": "kek"
-        },
-        "emotes": {
-            "notificationUsersEmote": {
-                "name": "kek",
-                "id": "kek"
-            },
-            "notificationOwnerEmote": {
-                "name": "kek",
-                "id": "kek"
-            },
-            "offtopEmoteEmote": {
-                "name": "kek",
-                "id": "kek"
-            }
-        },
-        "counts": {
-            "offtopEmoteCount": "kek"
-        },
-        "channels": {
-            "notificationChannel": {
-                "name": "kek",
-                "id": "kek"
-            },
-            "joinAndLeaveChannel": {
-                "name": "kek",
-                "id": "kek"
-            },
-            "botReadyChannel": {
-                "name": "kek",
-                "id": "kek"
-            },
-            "choiceRoomsChannel": {
-                "name": "kek",
-                "id": "kek"
-            }
-        },
-        "times": {
-            "offtopDeleteTime": "kek"
-        },
-        "functions": {
-            "musicFunctional": {
-                "enable": true
-            },
-            "saveRoleFunctional": {
-                "enable": true
-            },
-            "rollFunctional": {
-                "enable": true
-            },
-            "notificationFunctional": {
-                "enable": true
-            }
-        }
-    }
+  "bot.id": "kek",
+  "counts.offtopEmoteCount": "kek",
+  "emotes.offtopEmoteId": "kek",
+  "channels.joinAndLeaveChannel.id": "kek",
+  "channels.botReadyChannel.id": "kek",
+  "times.offtopDeleteTime": "kek",
+  "functions.musicFunctional.enable": false,
+  "functions.saveRoleFunctional.enable": false,
+  "functions.rollFunctional.enable": false,
+  "functions.offtopFunctional.enable": false
 }

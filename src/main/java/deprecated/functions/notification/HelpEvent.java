@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package deprecated.functions.notification;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.awt.*;
 
-
+@Deprecated
 public class HelpEvent extends ListenerAdapter {
 
     @Value("${emote.NotificationOwner.full}")

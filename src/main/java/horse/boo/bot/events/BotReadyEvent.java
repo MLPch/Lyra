@@ -1,5 +1,6 @@
 package horse.boo.bot.events;
 
+import horse.boo.bot.setup.config.BotSystemChannelService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.maven.model.Model;
@@ -7,7 +8,6 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.awt.*;
 import java.io.FileReader;
@@ -21,6 +21,7 @@ public class BotReadyEvent extends ListenerAdapter {
 
     @Override
     public void onReady(net.dv8tion.jda.api.events.@NotNull ReadyEvent event) {
+
         MavenXpp3Reader reader = new MavenXpp3Reader();
         Model model;
         try {
