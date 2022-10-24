@@ -27,7 +27,7 @@ public class OfftopDeleteEvent extends ListenerAdapter {
     private short offtopDeleteEvent;
 
     @Override
-    @Deprecated
+
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         event.getChannel().retrieveMessageById(event.getMessageId()).queue();
         Message msg = event.getChannel().retrieveMessageById(event.getMessageId()).complete();

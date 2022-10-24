@@ -1,14 +1,12 @@
 package horse.boo.bot.config;
 
-import horse.boo.bot.Lyra;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class CommandsConfig extends BotConfig {
+public class CommandsConfig {
 
     public void ss(JDA jda) {
 

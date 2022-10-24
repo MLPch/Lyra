@@ -20,7 +20,7 @@ public class MemberJoinEvent extends ListenerAdapter {
     private long vyborKomnatChannel;
 
     @Override
-    @Deprecated
+
     public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         boolean stopped = true;
         Member member = event.getMember();

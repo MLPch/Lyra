@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package horse.boo.bot.deprecated.functions.notification;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
+@Deprecated
 public class RemoveReactionOnPostEvent extends ListenerAdapter {
 
     @Value("${emote.NotificationUsers}")

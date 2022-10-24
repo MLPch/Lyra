@@ -1,6 +1,5 @@
 package horse.boo.bot.setup.steps;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -14,100 +13,57 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class SetupStepOne extends ListenerAdapter {
-    private String systemChannel = "system-channel-lyra";
-    ObjectMapper mapper = new ObjectMapper();
+    private final String systemChannel = "system-channel-lyra";
+
+    public SetupStepOne() {
+
+    }
 
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
         var guild = event.getGuild();
-        var msgHistory = getMessagesFromSystemLyraChannel(guild);
         var channel = guild.getTextChannelById(getSystemLyraChannel(guild).getId());
-        System.out.println("Config history in guild " + event.getGuild() + ":\n" + msgHistory);
+        var msgHistory = getMessagesFromSystemLyraChannel(guild);
+        assert channel != null;
+
+//        System.out.println("Config history in guild " + event.getGuild() + ":\n" + msgHistory);
+//        System.out.println(msgHistory.get(msgHistory.size() - 1).getContentRaw());
+        Path path = Paths.get("src/main/resources/config.json");
+        System.out.println(path.getFileName());
+
+        StringBuilder sb = new StringBuilder();
+        try (Stream<String> stream = Files.lines(path)) {
+            stream.forEach(s -> sb.append(s).append("\n"));
+
+        } catch (IOException ex) {
+            // Handle exception
+        }
+        String initialJsonConfig = sb.toString();
+
         if (msgHistory.isEmpty()) {
-            channel.sendMessage("{\n" +
-                    "  \"variables\": {\n" +
-                    "    \"bot\": {\n" +
-                    "      \"name\": \"Spike\",\n" +
-                    "      \"id\": \"746130954355081408\"\n" +
-                    "    },\n" +
-                    "    \"emotes\": {\n" +
-                    "      \"notificationUsers\": {\n" +
-                    "        \"name\": \"dovolen\",\n" +
-                    "        \"id\": \"909091212890361966\"\n" +
-                    "      },\n" +
-                    "      \"notificationOwner\": {\n" +
-                    "        \"name\": \"zeleniy\",\n" +
-                    "        \"id\": \"909091915675353128\"\n" +
-                    "      },\n" +
-                    "      \"offtopEmote\": {\n" +
-                    "        \"name\": \"xyi\",\n" +
-                    "        \"id\": \"822373612564512788\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    \"counts\": {\n" +
-                    "      \"offtopEmote\": \"1\"\n" +
-                    "    },\n" +
-                    "    \"channels\": {\n" +
-                    "      \"notificationChannel\": \"734167565756137492\",\n" +
-                    "      \"joinAndLeaveChannel\": \"734167565756137492\",\n" +
-                    "      \"botReadyChannel\": \"942816365331513445\",\n" +
-                    "      \"vyborKomnatChannel\": \"734167565756137492\"\n" +
-                    "    },\n" +
-                    "    \"times\": {\n" +
-                    "      \"offtopDelete\": \"3000\"\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "}").queue();
+            channel.sendMessage(initialJsonConfig).queue();
             channel.sendMessage("--------\n--------\n--------\n").queue();
+            System.out.println("INITIAL_SEND_JSON_CONFIG ---> \n" + initialJsonConfig);
         }
 
-        System.out.println(msgHistory.get(msgHistory.size() - 1).getContentRaw());
-//        msgHistory.get(msgHistory.size() - 1).editMessage("{\n" +
-//                "  \"variables\": {\n" +
-//                "    \"bot\": {\n" +
-//                "      \"name\": \"sasdasda\",\n" +
-//                "      \"id\": \"asdasdasa\"\n" +
-//                "    },\n" +
-//                "    \"emotes\": {\n" +
-//                "      \"notificationUsers\": {\n" +
-//                "        \"name\": \"bruuasdasdauh\",\n" +
-//                "        \"id\": \"134576asdasda612354412\"\n" +
-//                "      },\n" +
-//                "      \"notificationOwner\": {\n" +
-//                "        \"name\": \"bruasdasdauuh\",\n" +
-//                "        \"id\": \"1345766asdasda12354412\"\n" +
-//                "      },\n" +
-//                "      \"offtopEmote\": {\n" +
-//                "        \"name\": \"bruasdasdauuh\",\n" +
-//                "        \"id\": \"13457661asdasda2354412\"\n" +
-//                "      }\n" +
-//                "    },\n" +
-//                "    \"counts\": {\n" +
-//                "      \"offtopEmote\": \"bruasdasdauuuh\"\n" +
-//                "    },\n" +
-//                "    \"channels\": {\n" +
-//                "      \"notificationChannel\": \"sdasdaasdasdaasdasdasdasd\",\n" +
-//                "      \"joinAndLeaveChannel\": \"sdasasdasdadasdasd\",\n" +
-//                "      \"botReadyChannel\": \"sdasdasasdasdadasd\",\n" +
-//                "      \"vyborKomnatChannel\": \"sdasdasdasdaasdasd\"\n" +
-//                "    },\n" +
-//                "    \"times\": {\n" +
-//                "      \"offtopDelete\": \"3000\"\n" +
-//                "    }\n" +
-//                "  }\n" +
-//                "}").queue();
+//        msgHistory.get(msgHistory.size() - 1).editMessage("").queue();
 //        System.out.println(msgHistory.get(msgHistory.size() - 1).getContentRaw());
 
     }
 
 
-    public Languages onButtonClick(@NotNull ButtonInteractionEvent event) {
+    public Languages onButtonClick(ButtonInteractionEvent event) {
         Languages language = Languages.ENGLISH;
         if (event.getComponentId().equals("1")) {
             event.getMessage().delete().queue();
@@ -136,17 +92,17 @@ public class SetupStepOne extends ListenerAdapter {
         return language;
     }
 
+
     public GuildChannel createSystemLyraChannel(Guild guild) {
-        final GuildChannel[] channel = new GuildChannel[1];
         System.out.println("createSystemLyraChannel");
-        guild.createTextChannel(systemChannel)
+        return guild.createTextChannel(systemChannel)
                 .addPermissionOverride(Objects.requireNonNull(guild.getMemberById("320332718921482241")), EnumSet.of(Permission.ADMINISTRATOR), null)
                 .addPermissionOverride(Objects.requireNonNull(guild.getBotRole()), EnumSet.of(Permission.ADMINISTRATOR), null)
                 .addPermissionOverride(guild.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
-                .queue(c -> channel[0] = c);
-
-        return channel[0];
+                .timeout(5, TimeUnit.SECONDS)
+                .complete();
     }
+
 
     private GuildChannel getSystemLyraChannel(Guild guild) {
         System.out.println("getSystemLyraChannel");
@@ -156,9 +112,10 @@ public class SetupStepOne extends ListenerAdapter {
                 .findFirst().orElseGet(() -> createSystemLyraChannel(guild));
     }
 
-    @NotNull
+
     private List<Message> getMessagesFromSystemLyraChannel(Guild guild) {
         var channel = getSystemLyraChannel(guild);
+        System.out.println("getMessagesFromSystemLyraChannel");
         return MessageHistory.getHistoryFromBeginning((MessageChannel) channel).complete()
                 .getRetrievedHistory();
     }

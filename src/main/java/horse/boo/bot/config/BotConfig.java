@@ -1,7 +1,8 @@
 package horse.boo.bot.config;
 
+import horse.boo.bot.deprecated.functions.notification.AddReactionOnPostEvent;
+import horse.boo.bot.deprecated.functions.notification.RemoveReactionOnPostEvent;
 import horse.boo.bot.events.*;
-import horse.boo.bot.events.SlashCommandEvent;
 import horse.boo.bot.setup.InitialSetupEvent;
 import horse.boo.bot.setup.steps.SetupStepOne;
 import net.dv8tion.jda.api.JDA;
@@ -28,6 +29,10 @@ public class BotConfig {
 
     public static JDABuilder jda;
 
+    public BotConfig() {
+
+    }
+
     @Bean
     public JDA jdaBuilder() {
         List<GatewayIntent> intents = List.of(GUILD_MESSAGES,
@@ -53,8 +58,6 @@ public class BotConfig {
         jda.addEventListeners(memberJoinEvent());                           // Оповещение о новом участнике
         jda.addEventListeners(memberLeaveEvent());                          // Оповещение об уходе участника
         jda.addEventListeners(offtopDeleteEvent());                         // Удаление нежелательного контента
-        jda.addEventListeners(addReactionOnPostEvent());                    // Подписка на ивент (триггер)
-        jda.addEventListeners(removeReactionOnPostEvent());                 // Подписка на ивент (исполнитель)
         jda.addEventListeners(helpEvent());                                 // Правила использования подписки на ивент
         jda.addEventListeners(slashCommandEvent());
         jda.addEventListeners(initialSetupEvent());
@@ -86,16 +89,6 @@ public class BotConfig {
     @Bean
     public OfftopDeleteEvent offtopDeleteEvent() {
         return new OfftopDeleteEvent();
-    }
-
-    @Bean
-    public AddReactionOnPostEvent addReactionOnPostEvent() {
-        return new AddReactionOnPostEvent();
-    }
-
-    @Bean
-    public RemoveReactionOnPostEvent removeReactionOnPostEvent() {
-        return new RemoveReactionOnPostEvent();
     }
 
     @Bean

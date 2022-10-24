@@ -1,9 +1,7 @@
-package horse.boo.bot.events;
+package horse.boo.bot.deprecated.functions.notification;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-
 import net.dv8tion.jda.api.entities.Message;
-
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.awt.*;
 import java.util.Objects;
 
+@Deprecated
 public class AddReactionOnPostEvent extends ListenerAdapter {
 
     @Value("${emote.NotificationUsers}")
