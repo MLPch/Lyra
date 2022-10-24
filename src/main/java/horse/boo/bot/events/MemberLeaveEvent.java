@@ -1,7 +1,6 @@
 package horse.boo.bot.events;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
@@ -18,7 +17,7 @@ public class MemberLeaveEvent extends ListenerAdapter {
     private long joinAndLeaveChannel;
 
     @Override
-    @Deprecated
+
     public void onGuildMemberRemove(@Nonnull GuildMemberRemoveEvent event) {
         boolean stopped = true;
         User user = event.getUser();
