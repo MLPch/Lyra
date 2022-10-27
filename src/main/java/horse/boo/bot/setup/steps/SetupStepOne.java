@@ -2,6 +2,7 @@ package horse.boo.bot.setup.steps;
 
 import horse.boo.bot.setup.config.BotSystemChannelService;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -25,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class SetupStepOne extends ListenerAdapter {
-    private final String systemChannel = "system-channel-lyra";
     BotSystemChannelService botSystemChannelService = new BotSystemChannelService();
     public SetupStepOne() {
 
@@ -36,8 +36,9 @@ public class SetupStepOne extends ListenerAdapter {
         var guild = event.getGuild();
         var channel = botSystemChannelService.getSystemLyraChannel(guild);
         var msgHistory = botSystemChannelService.getMessagesFromSystemLyraChannel(guild);
+
         try {
-            botSystemChannelService.getOrCreateAndGetConfigMessage(event.getGuild());
+            botSystemChannelService.getOrCreateAndGetConfigMessage(guild);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

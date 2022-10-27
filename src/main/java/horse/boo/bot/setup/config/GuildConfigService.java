@@ -17,10 +17,20 @@ public class GuildConfigService {
 
     }
 
+    /**
+     * @param guild
+     * @return
+     * @throws IOException
+     */
     public GuildConfig getActualGuildConfig(Guild guild) throws IOException {
         return mapper.readValue(getConfigMessage(guild).getContentRaw(), GuildConfig.class);
     }
 
+    /**
+     * @param guild
+     * @param newGuildConfig
+     * @throws IOException
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public void updateGuildConfigMessage(Guild guild, GuildConfig newGuildConfig) throws IOException {
         Message configMessage = getConfigMessage(guild);
@@ -31,6 +41,11 @@ public class GuildConfigService {
     }
 
 
+    /**
+     * @param guild
+     * @return
+     * @throws IOException
+     */
     private Message getConfigMessage(Guild guild) throws IOException {
         BotSystemChannelService bscs = new BotSystemChannelService();
         return bscs.getOrCreateAndGetConfigMessage(guild);

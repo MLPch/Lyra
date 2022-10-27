@@ -50,14 +50,14 @@ public class BotConfig {
         jda.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         jda.setBulkDeleteSplittingEnabled(false);
         jda.setCompression(Compression.NONE);
-        jda.setActivity(Activity.watching("ponies, dreams of people."));        // Активность бота
+        jda.setActivity(Activity.playing("pi-pu-pa-pi-pa"));        // Активность бота
         jda.setEnabledIntents(intents);
         jda.addEventListeners(botReadyEvent());                             // Оповещение о запуске бота
         jda.addEventListeners(pingEvent());                                 // Проверка работоспособности бота
         jda.addEventListeners(memberJoinEvent());                           // Оповещение о новом участнике
         jda.addEventListeners(memberLeaveEvent());                          // Оповещение об уходе участника
         jda.addEventListeners(offtopDeleteEvent());                         // Удаление нежелательного контента
-        jda.addEventListeners(slashCommandEvent());
+//        jda.addEventListeners(slashCommandEvent());
         jda.addEventListeners(initialSetupEvent());
         jda.addEventListeners(setupStepOne());
         return jda.build();
@@ -88,10 +88,10 @@ public class BotConfig {
     public OfftopDeleteEvent offtopDeleteEvent() {
         return new OfftopDeleteEvent();
     }
-    @Bean
-    public SlashCommandEvent slashCommandEvent() {
-        return new SlashCommandEvent();
-    }
+//    @Bean
+//    public SlashCommandEvent slashCommandEvent() {
+//        return new SlashCommandEvent();
+//    }
     @Bean
     public InitialSetupEvent initialSetupEvent() {
         return new InitialSetupEvent();

@@ -23,6 +23,11 @@ import java.util.stream.Stream;
 public class BotSystemChannelService {
     private final String systemChannel = "system-channel-lyra";
 
+    /**
+     * @param guild
+     * @return
+     * @throws IOException
+     */
     public Message getOrCreateAndGetConfigMessage(Guild guild) throws IOException {
         List<Message> msgHistory = getMessagesFromSystemLyraChannel(guild);
 
@@ -33,10 +38,16 @@ public class BotSystemChannelService {
         return msgHistory.get(msgHistory.size() - 1);
     }
 
+    /**
+     * @param channel
+     */
     private void sendConfigInTextChannel(@NotNull TextChannel channel) {
         channel.sendMessage(initialGuildConfig()).complete();
     }
 
+    /**
+     * @return
+     */
     private @NotNull String initialGuildConfig() {
         Path path = Paths.get("src/main/resources/config.json");
 
@@ -50,6 +61,10 @@ public class BotSystemChannelService {
         return sb.toString();
     }
 
+    /**
+     * @param guild
+     * @return
+     */
     private TextChannel createSystemLyraChannel(@NotNull Guild guild) {
         return guild.createTextChannel(systemChannel)
                 .addPermissionOverride(Objects.requireNonNull(guild.getMemberById("320332718921482241")), EnumSet.of(Permission.ADMINISTRATOR), null)
@@ -60,6 +75,10 @@ public class BotSystemChannelService {
     }
 
 
+    /**
+     * @param guild
+     * @return
+     */
     public GuildChannel getSystemLyraChannel(@NotNull Guild guild) {
         return guild.getChannels()
                 .stream()
@@ -68,6 +87,10 @@ public class BotSystemChannelService {
     }
 
 
+    /**
+     * @param guild
+     * @return
+     */
     public List<Message> getMessagesFromSystemLyraChannel(Guild guild) {
         var channel = getSystemLyraChannel(guild);
         return MessageHistory.getHistoryFromBeginning((MessageChannel) channel).complete()
