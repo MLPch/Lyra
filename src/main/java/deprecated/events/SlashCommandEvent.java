@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package deprecated.events;
 
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -9,9 +9,9 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 
 public class SlashCommandEvent extends ListenerAdapter {
-
-    @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+@Deprecated
+@Override
+public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         // Simple reply commands
         CommandListUpdateAction commands = event.getJDA().updateCommands();
         commands.addCommands(

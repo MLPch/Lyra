@@ -35,7 +35,7 @@ public class SetupStepOne extends ListenerAdapter {
     public void onGuildReady(@NotNull GuildReadyEvent event) {
         var guild = event.getGuild();
         var channel = botSystemChannelService.getSystemLyraChannel(guild);
-        var msgHistory = botSystemChannelService.getMessagesFromSystemLyraChannel(guild);
+//        var msgHistory = botSystemChannelService.getMessagesFromSystemLyraChannel(guild);
 
         try {
             botSystemChannelService.getOrCreateAndGetConfigMessage(guild);

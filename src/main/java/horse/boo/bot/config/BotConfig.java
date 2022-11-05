@@ -1,6 +1,5 @@
 package horse.boo.bot.config;
 
-import deprecated.functions.notification.HelpEvent;
 import horse.boo.bot.events.*;
 import horse.boo.bot.setup.InitialSetupEvent;
 import horse.boo.bot.setup.steps.SetupStepOne;
@@ -21,6 +20,7 @@ import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 
 @Configuration
 @PropertySource("classpath:test.properties")
+
 public class BotConfig {
 
     @Value("${bot.token}")
@@ -57,7 +57,6 @@ public class BotConfig {
         jda.addEventListeners(memberJoinEvent());                           // Оповещение о новом участнике
         jda.addEventListeners(memberLeaveEvent());                          // Оповещение об уходе участника
         jda.addEventListeners(offtopDeleteEvent());                         // Удаление нежелательного контента
-//        jda.addEventListeners(slashCommandEvent());
         jda.addEventListeners(initialSetupEvent());
         jda.addEventListeners(setupStepOne());
         return jda.build();
@@ -88,10 +87,6 @@ public class BotConfig {
     public OfftopDeleteEvent offtopDeleteEvent() {
         return new OfftopDeleteEvent();
     }
-//    @Bean
-//    public SlashCommandEvent slashCommandEvent() {
-//        return new SlashCommandEvent();
-//    }
     @Bean
     public InitialSetupEvent initialSetupEvent() {
         return new InitialSetupEvent();

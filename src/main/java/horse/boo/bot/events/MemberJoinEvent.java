@@ -1,5 +1,6 @@
 package horse.boo.bot.events;
 
+import horse.boo.bot.setup.steps.Languages;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -10,17 +11,18 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.time.OffsetDateTime;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class MemberJoinEvent extends ListenerAdapter {
-
+    String language = Languages.ENGLISH.getLanguage();
     @Value("${channel.JoinAndLeaveChannel}")
     private long joinAndLeaveChannel;
     @Value("${channel.VyborKomnatChannel}")
     private long vyborKomnatChannel;
 
     @Override
-
     public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         boolean stopped = true;
         Member member = event.getMember();
@@ -33,7 +35,7 @@ public class MemberJoinEvent extends ListenerAdapter {
                 "Пожалуйста, посети канал <#"
                         + vyborKomnatChannel
                         + "> для выбора"
-                        + " контента который ты хочешь видеть или для создания собственного канала. По любым вопросам ты можешь обращаться к "
+                        + " " + "контента который ты хочешь видеть или для создания собственного канала. По любым вопросам ты можешь обращаться к "
                         + Objects.requireNonNull(event.getGuild().getRoleById(736492288171048961L)).getAsMention() + "!", true);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(img);
@@ -48,8 +50,10 @@ public class MemberJoinEvent extends ListenerAdapter {
                 e.printStackTrace();
             }
             assert channel != null;
-            channel.sendMessage("Проходи, дорогой " + ping + "!\n").setEmbeds(eb.build()).queue();
+            channel.sendMessage("Проходи, дорогой" + " " + ping + "!\n").setEmbeds(eb.build()).queue();
             stopped = false;
         }
     }
+
+
 }
