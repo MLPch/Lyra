@@ -1,59 +1,72 @@
 package horse.boo.bot.events;
 
+import horse.boo.bot.database.dao.LocaleDAO;
+import horse.boo.bot.setup.config.GuildConfig;
+import horse.boo.bot.setup.config.GuildConfigService;
 import horse.boo.bot.setup.steps.Languages;
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.time.OffsetDateTime;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 public class MemberJoinEvent extends ListenerAdapter {
-    String language = Languages.ENGLISH.getLanguage();
-    @Value("${channel.JoinAndLeaveChannel}")
-    private long joinAndLeaveChannel;
-    @Value("${channel.VyborKomnatChannel}")
-    private long vyborKomnatChannel;
+    @Autowired
+    LocaleDAO localeDAO;
+    @Autowired
+    GuildConfigService guildConfigService;
 
+    @SneakyThrows
     @Override
-    public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+
+        GuildConfig guildConfig = guildConfigService.getActualGuildConfig(event.getGuild());
+        Languages language = guildConfig.getBotLanguage();
+        String stringAboveEmbed = localeDAO.getLocaleByName("greetings_default_stringAbove").getLocaleStringByLanguage(language);
         boolean stopped = true;
-        Member member = event.getMember();
-        String img = member.getUser().getEffectiveAvatarUrl();
-        String ping = member.getUser().getAsMention();
-        TextChannel channel = event.getGuild().getTextChannelById(joinAndLeaveChannel);
-
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.addField("Добро пожаловать в лучшее место!",
-                "Пожалуйста, посети канал <#"
-                        + vyborKomnatChannel
-                        + "> для выбора"
-                        + " " + "контента который ты хочешь видеть или для создания собственного канала. По любым вопросам ты можешь обращаться к "
-                        + Objects.requireNonNull(event.getGuild().getRoleById(736492288171048961L)).getAsMention() + "!", true);
-        eb.setColor(Color.YELLOW);
-        eb.setThumbnail(img);
-        eb.setTimestamp(OffsetDateTime.now());
-        eb.setFooter("Время появления на сервере", event.getGuild().getIconUrl());
-
+        String ping = event.getMember().getUser().getAsMention();
+        TextChannel channel = event.getGuild().getTextChannelById(guildConfig.getJoinAndLeaveChannelId());
 
         while (stopped) {
             try {
                 Thread.sleep(700);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
             assert channel != null;
-            channel.sendMessage("Проходи, дорогой" + " " + ping + "!\n").setEmbeds(eb.build()).queue();
+            channel.sendMessage(stringAboveEmbed + " " + ping + "!\n").setEmbeds(greetingEmbed(event)).queue();
             stopped = false;
         }
     }
 
+    @SneakyThrows
+    private MessageEmbed greetingEmbed(GuildMemberJoinEvent event) {
+
+
+        GuildConfig guildConfig = guildConfigService.getActualGuildConfig(event.getGuild());
+
+        Languages language = guildConfig.getBotLanguage();
+        //TODO: Добавить функционал с кастомными наборами фраз через замену default
+        String fieldName1 = localeDAO.getLocaleByName("greetings_default_fieldName").getLocaleStringByLanguage(language);
+        String fieldValue1 = localeDAO.getLocaleByName("greetings_default_fieldValue").getLocaleStringByLanguage(language);
+        String footerText1 = localeDAO.getLocaleByName("greetings_default_footerText").getLocaleStringByLanguage(language);
+
+
+        String img = event.getMember().getUser().getEffectiveAvatarUrl();
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField(fieldName1,
+                fieldValue1, true);
+        eb.setColor(Color.YELLOW);
+        eb.setThumbnail(img);
+        eb.setTimestamp(OffsetDateTime.now());
+        eb.setFooter(footerText1, event.getGuild().getIconUrl());
+        return eb.build();
+    }
 
 }

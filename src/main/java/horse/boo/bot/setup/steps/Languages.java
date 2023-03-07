@@ -2,10 +2,10 @@ package horse.boo.bot.setup.steps;
 
 public enum Languages {
 
+    ENGLISH("English"),
     RUSSIAN("Russian"),
     UKRAINE("Ukraine"),
-    CHINA("China"),
-    ENGLISH("English");
+    CHINA("China");
 
     final String languageType;
 

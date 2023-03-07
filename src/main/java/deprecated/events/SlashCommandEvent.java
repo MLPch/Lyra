@@ -7,9 +7,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
-
-public class SlashCommandEvent extends ListenerAdapter {
 @Deprecated
+public class SlashCommandEvent extends ListenerAdapter {
+
 @Override
 public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         // Simple reply commands

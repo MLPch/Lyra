@@ -2,13 +2,14 @@ package horse.boo.bot.config;
 
 import horse.boo.bot.events.*;
 import horse.boo.bot.setup.InitialSetupEvent;
-import horse.boo.bot.setup.steps.SetupStepOne;
+import horse.boo.bot.setup.steps.BotGuildJoin;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import java.util.List;
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 
 @Configuration
-@PropertySource("classpath:test.properties")
+@PropertySource("classpath:lyra.properties")
 
 public class BotConfig {
 
@@ -34,20 +35,22 @@ public class BotConfig {
 
     @Bean
     public JDA jdaBuilder() {
+
         List<GatewayIntent> intents = List.of(GUILD_MESSAGES,
                 MESSAGE_CONTENT,
                 GUILD_MESSAGE_REACTIONS,
                 GUILD_INVITES,
                 GUILD_WEBHOOKS,
-                GUILD_BANS,
                 GUILD_EMOJIS_AND_STICKERS,
                 GUILD_VOICE_STATES,
                 DIRECT_MESSAGE_REACTIONS,
                 GUILD_MESSAGE_TYPING,
                 GUILD_MEMBERS,
-                GUILD_PRESENCES);
+                GUILD_PRESENCES,
+                SCHEDULED_EVENTS);
+
         jda = JDABuilder.createDefault(token);
-        jda.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+        jda.disableCache(CacheFlag.SCHEDULED_EVENTS, CacheFlag.VOICE_STATE);
         jda.setBulkDeleteSplittingEnabled(false);
         jda.setCompression(Compression.NONE);
         jda.setActivity(Activity.playing("pi-pu-pa-pi-pa"));        // Активность бота
@@ -58,7 +61,7 @@ public class BotConfig {
         jda.addEventListeners(memberLeaveEvent());                          // Оповещение об уходе участника
         jda.addEventListeners(offtopDeleteEvent());                         // Удаление нежелательного контента
         jda.addEventListeners(initialSetupEvent());
-        jda.addEventListeners(setupStepOne());
+        jda.addEventListeners(botGuildJoin());
         return jda.build();
     }
 
@@ -87,12 +90,14 @@ public class BotConfig {
     public OfftopDeleteEvent offtopDeleteEvent() {
         return new OfftopDeleteEvent();
     }
+
     @Bean
     public InitialSetupEvent initialSetupEvent() {
         return new InitialSetupEvent();
     }
+
     @Bean
-    public SetupStepOne setupStepOne() {
-        return new SetupStepOne();
+    public BotGuildJoin botGuildJoin() {
+        return new BotGuildJoin();
     }
 }

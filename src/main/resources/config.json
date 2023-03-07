@@ -1,12 +1,14 @@
 {
-  "bot.id": "kek",
-  "counts.offtopEmoteCount": "kek",
-  "emotes.offtopEmoteId": "kek",
-  "channels.joinAndLeaveChannel.id": "kek",
-  "channels.botReadyChannel.id": "kek",
-  "times.offtopDeleteTime": "kek",
-  "functions.musicFunctional.enable": false,
-  "functions.saveRoleFunctional.enable": false,
-  "functions.rollFunctional.enable": false,
-  "functions.offtopFunctional.enable": false
+  "bot.id": 123,
+  "bot.language": "ENGLISH",
+  "count.offtopEmote": 123,
+  "emote.offtopEmote.id": 123,
+  "channel.joinAndLeaveChannel.id": 123,
+  "channel.logsChannel.id": 123,
+  "channel.botReadyChannel.id": 123,
+  "time.offtopDelete": 12345,
+  "function.musicFunctional.enable": false,
+  "function.saveRoleFunctional.enable": false,
+  "function.rollFunctional.enable": false,
+  "function.offtopFunctional.enable": false
 }

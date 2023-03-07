@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Objects;
 
-
+@Component
 public class GuildConfigService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -18,9 +19,9 @@ public class GuildConfigService {
     }
 
     /**
-     * @param guild
-     * @return
-     * @throws IOException
+     * @param guild guild
+     * @return GuildConfig
+     * @throws IOException mhm
      */
     public GuildConfig getActualGuildConfig(Guild guild) throws IOException {
         return mapper.readValue(getConfigMessage(guild).getContentRaw(), GuildConfig.class);

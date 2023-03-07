@@ -3,46 +3,52 @@ package horse.boo.bot.setup.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import horse.boo.bot.setup.steps.Languages;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Jacksonized
 @Builder
-@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GuildConfig {
 
     @JsonProperty("bot.id")
-    private String botId;
-    @JsonProperty("counts.offtopEmoteCount")
-    private String offtopEmoteCount;
+    private long botId;
 
-    @JsonProperty("emotes.offtopEmoteId")
-    private String offtopEmoteId;
+    @JsonProperty("bot.language")
+    private Languages botLanguage;
 
-    @JsonProperty("channels.joinAndLeaveChannel.id")
-    private String joinAndLeaveChannelId;
+    @JsonProperty("count.offtopEmote")
+    private long offtopEmoteCount;
 
-    @JsonProperty("channels.botReadyChannel.id")
-    private String botReadyChannelId;
+    @JsonProperty("emote.offtopEmote.id")
+    private long offtopEmoteId;
 
-    @JsonProperty("times.offtopDeleteTime")
-    private String offtopDeleteTime;
+    @JsonProperty("channel.joinAndLeaveChannel.id")
+    private long joinAndLeaveChannelId;
 
-    @JsonProperty("functions.musicFunctional.enable")
+    @JsonProperty("channel.logsChannel.id")
+    private long logsChannelId;
+
+    @JsonProperty("channel.botReadyChannel.id")
+    private long botReadyChannelId;
+
+    @JsonProperty("time.offtopDelete")
+    private long offtopDeleteTime;
+
+    @JsonProperty("function.musicFunctional.enable")
     private boolean musicFunctionalEnable;
 
-    @JsonProperty("functions.saveRoleFunctional.enable")
+    @JsonProperty("function.saveRoleFunctional.enable")
     private boolean saveRoleFunctionalEnable;
 
-    @JsonProperty("functions.rollFunctional.enable")
+    @JsonProperty("function.rollFunctional.enable")
     private boolean rollFunctionalEnable;
-    @JsonProperty("functions.offtopFunctional.enable")
+    @JsonProperty("function.offtopFunctional.enable")
     private boolean offtopFunctionalEnable;
 
 
@@ -50,8 +56,10 @@ public class GuildConfig {
     public String toString() {
         return "{" +
                 "botId=" + botId +
+                ", botLanguage=" + botLanguage +
                 ", countsOfftopEmoteCount=" + offtopEmoteCount +
                 ", joinAndLeaveChannelId=" + joinAndLeaveChannelId +
+                ", logsChannelId=" + logsChannelId +
                 ", botReadyChannelId=" + botReadyChannelId +
                 ", offtopDeleteTime=" + offtopDeleteTime +
                 ", offtopEmoteEmoteId=" + offtopEmoteId +
@@ -61,4 +69,5 @@ public class GuildConfig {
                 ", offtopFunctionalEnable=" + offtopFunctionalEnable +
                 '}';
     }
+
 }

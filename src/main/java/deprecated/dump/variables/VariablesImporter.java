@@ -1,6 +1,7 @@
-//package horse.boo.bot.setup.variables;
+//package deprecated.dump.variables;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
+//import horse.boo.bot.setup.config.GuildConfig;
 //import lombok.extern.slf4j.Slf4j;
 //import net.dv8tion.jda.api.entities.Guild;
 //import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@
 //
 //@Slf4j
 //@Component
+//@Deprecated
 //public class VariablesImporter {
 //
 //    private static final ObjectMapper mapper = new ObjectMapper();

@@ -1,14 +1,13 @@
 package horse.boo.bot.database.config;
 
 
+
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+
+import javax.servlet.*;
 import java.util.EnumSet;
 
 public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -27,7 +26,7 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
         return new String[]{"/"};
     }
 
-    @Override
+
     public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
         registerCharacterEncodingFilter(aServletContext);
@@ -46,7 +45,7 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
 
-        FilterRegistration.Dynamic characterEncoding = aContext.addFilter("characterEncoding", characterEncodingFilter);
+        FilterRegistration.Dynamic characterEncoding = aContext.addFilter("characterEncoding", (Filter) characterEncodingFilter);
         characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
     }
 }

@@ -1,5 +1,6 @@
 package horse.boo.bot.database.models;
 
+import horse.boo.bot.setup.steps.Languages;
 import net.bytebuddy.utility.nullability.MaybeNull;
 
 import javax.persistence.GeneratedValue;
@@ -98,6 +99,27 @@ public class Locale {
 
     public void setLocale_cn(@MaybeNull String locale_cn) {
         this.locale_cn = locale_cn;
+    }
+
+    public String getLocaleStringByLanguage(Languages language){
+        String result = null;
+        switch (language) {
+            case ENGLISH:
+                result = locale_en;
+                break;
+            case RUSSIAN:
+                result = locale_ru;
+                break;
+            case UKRAINE:
+                result = locale_ua;
+                break;
+            case CHINA:
+                result = locale_cn;
+                break;
+            default:
+                break;
+        }
+        return result;
     }
 }
 

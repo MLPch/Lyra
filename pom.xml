@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>2.7.9</version>
         <relativePath/>
     </parent>
 
@@ -30,7 +30,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <springframework.version>5.3.23</springframework.version>
+        <springframework.version>5.3.25</springframework.version>
     </properties>
 
 
@@ -113,16 +113,16 @@
             <artifactId>spring-session-core</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf</groupId>-->
-<!--            <artifactId>thymeleaf-spring5</artifactId>-->
-<!--            <version>3.1.0.RC1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>3.1.1.RELEASE</version>
+        </dependency>
 
         <dependency>
             <groupId>com.github.DV8FromtheWorld</groupId>
             <artifactId>JDA</artifactId>
-            <version>v5.0.0-alpha.19</version>
+            <version>v5.0.0-beta.5</version>
         </dependency>
 
         <dependency>
@@ -141,7 +141,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.0</version>
+            <version>42.5.1</version>
         </dependency>
 
         <dependency>
@@ -187,6 +187,11 @@
             <version>3.8.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+        </dependency>
 
     </dependencies>
 
