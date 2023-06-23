@@ -15,8 +15,8 @@ public class MemberJoinEvent extends ListenerAdapter {
 
     @Value("${channel.JoinAndLeaveChannel}")
     private long joinAndLeaveChannel;
-    @Value("${channel.VyborKomnatChannel}")
-    private long vyborKomnatChannel;
+    @Value("${channel.VyborRoleyChannel}")
+    private long vyborRoleyChannel;
 
     @Override
     @Deprecated
@@ -28,13 +28,13 @@ public class MemberJoinEvent extends ListenerAdapter {
         TextChannel channel = event.getGuild().getTextChannelById(joinAndLeaveChannel);
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.addField("Добро пожаловать!",
-                "Будь хорошей пони и не забудь посетить  канал <#" + vyborKomnatChannel + "> для выбора" +
-                        " контента который ты хочешь видеть или для создания собственного канала!", true);
+        eb.addField("Welcome!",
+                "Go to the <#" + vyborRoleyChannel + "> and carefully choose the roles you need! " +
+                        "Don't take too much!", true);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(img);
         eb.setTimestamp(OffsetDateTime.now());
-        eb.setFooter("Время появления на сервере", event.getGuild().getIconUrl());
+        eb.setFooter("Time of appearance on the server", event.getGuild().getIconUrl());
 
 
         while (stopped) {
@@ -44,7 +44,7 @@ public class MemberJoinEvent extends ListenerAdapter {
                 e.printStackTrace();
             }
             assert channel != null;
-            channel.sendMessage("Проходи, дорогой " + ping + "!\n").setEmbeds(eb.build()).queue();
+            channel.sendMessage("Come on, honey " + ping + "!\n").setEmbeds(eb.build()).queue();
             stopped = false;
         }
     }

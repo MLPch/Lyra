@@ -11,7 +11,7 @@ public class PingEvent extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message msg = event.getMessage();
-        if ((msg.getContentRaw().equals("/lyraping")) &&
+        if ((msg.getContentRaw().equals("/lunaping")) &&
                 (msg.getAuthor().getIdLong() == 320332718921482241L)) {
             MessageChannel channel = event.getChannel();
             long time = System.currentTimeMillis();
@@ -19,7 +19,7 @@ public class PingEvent extends ListenerAdapter {
                     .queue(response -> {
                         response.editMessageFormat("Ping: %d ms", System.currentTimeMillis() - time).queue();
                     });
-        } else if ((msg.getContentRaw().equals("/lyraping")) &&
+        } else if ((msg.getContentRaw().equals("/lunaping")) &&
                 !(msg.getAuthor().getIdLong() == 320332718921482241L)) {
             msg.addReaction("❌").complete();
         }

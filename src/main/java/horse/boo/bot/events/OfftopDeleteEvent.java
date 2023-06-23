@@ -47,14 +47,14 @@ public class OfftopDeleteEvent extends ListenerAdapter {
                 }
                 String img = author.getEffectiveAvatarUrl();
                 String ping = author.getAsMention();
-                eb.setTitle("Твоё сообщение было удалено в результате всеобщего отвращения.");
+                eb.setTitle("Your post was deleted as a result of everyone's disgust.");
                 eb.setColor(Color.red);
                 eb.setThumbnail(img);
                 eb.setTimestamp(OffsetDateTime.now());
-                eb.setFooter("Сообщение подчищено ", event.getGuild().getIconUrl());
+                eb.setFooter("Message cleaned up ", event.getGuild().getIconUrl());
 
 
-                event.getChannel().sendMessage("Внимание " + ping + "!\n").setEmbeds(eb.build()).complete();
+                event.getChannel().sendMessage("Attention " + ping + "!\n").setEmbeds(eb.build()).complete();
                 author.openPrivateChannel().queue(channel -> channel.sendMessage(eb.build()).complete());
             }
         }
@@ -65,7 +65,7 @@ public class OfftopDeleteEvent extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent evt) {
 
         if ((evt.getAuthor().getIdLong() == selfUser) &&
-                (evt.getMessage().getContentRaw().contains("Внимание")) &&
+                (evt.getMessage().getContentRaw().contains("Attention")) &&
                 (!evt.getMessage().getEmbeds().isEmpty())) {
             try {
                 Thread.sleep(offtopDeleteEvent);

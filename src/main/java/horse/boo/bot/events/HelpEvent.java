@@ -22,7 +22,7 @@ public class HelpEvent extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message msg = event.getMessage();
-        if (msg.getContentRaw().equals("/lyrahelp")) {
+        if (msg.getContentRaw().equals("/lunahelp")) {
 
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Инструкция:");
@@ -38,7 +38,7 @@ public class HelpEvent extends ListenerAdapter {
             eb.setColor(Color.ORANGE);
             msg.replyEmbeds(eb.build()).complete();
 
-        } else if (msg.getContentRaw().equals("/lyrahelpdetail")) {
+        } else if (msg.getContentRaw().equals("/lunahelpdetail")) {
 
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Самая подробная инструкция которую только можно себе представить:");
