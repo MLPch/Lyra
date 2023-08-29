@@ -1,0 +1,20 @@
+spring:
+    jpa:
+        generate-ddl: true
+
+        hibernate:
+            ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                enable_lazy_load_no_trans: true
+                show_sql: false
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/compose-postgres}
+        username: ${SPRING_DATASOURCE_USERNAME:compose-postgres}
+        password: ${SPRING_DATASOURCE_PASSWORD:compose-postgres}
+discord:
+    token: ${DISCORD_TOKEN:compose-postgres}
+#spring.sql.init.schema-locations=classpath*:database/dbLog.sql
+#spring.sql.init.data-locations=classpath*:database/populateDB.sql

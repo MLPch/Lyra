@@ -1,7 +1,7 @@
 //package deprecated.dump.variables;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import horse.boo.bot.setup.config.GuildConfig;
+//import horse.boo.bot.setup.config.GuildLocaleService;
 //import lombok.extern.slf4j.Slf4j;
 //import net.dv8tion.jda.api.entities.Guild;
 //import org.springframework.stereotype.Component;
@@ -14,14 +14,14 @@
 //public class VariablesImporter {
 //
 //    private static final ObjectMapper mapper = new ObjectMapper();
-//    private GuildConfig variables;
+//    private GuildLocaleService variables;
 //
 //
 //    public VariablesImporter() throws IOException {
 //        getVariablesProperties();
 //    }
 //
-//    public GuildConfig getVariables(String json) throws IOException {
+//    public GuildLocaleService getVariables(String json) throws IOException {
 //        variables = parseConfig(json);
 //        return variables;
 //    }
@@ -41,7 +41,7 @@
 //        return null;
 //    }
 //
-//    private GuildConfig parseConfig(String json) throws IOException {
+//    private GuildLocaleService parseConfig(String json) throws IOException {
 //
 //        //        JsonFactory factory = mapper.getFactory();
 ////        JsonParser parser = factory.createParser(json);
@@ -50,6 +50,6 @@
 ////        JsonNode locatedNode = jsonNode.path("variables");
 ////
 ////        variables = mapper.readValue(mapper.writeValueAsString(locatedNode.get("variables")), VariablesImpl.class);
-//        return mapper.readValue(json, GuildConfig.class);
+//        return mapper.readValue(json, GuildLocaleService.class);
 //    }
 //}
