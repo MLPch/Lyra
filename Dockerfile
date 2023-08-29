@@ -1,10 +1,8 @@
-FROM openjdk:17.0.2
-
-WORKDIR /app
-
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-COPY Lyra.jar Lyra.jar
-
-ENTRYPOINT ["/bin/sh", "-c", "java -jar Lyra.jar"]
+FROM openjdk
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/compose-postgres
+ENV SPRING_DATASOURCE_USERNAME=compose-postgres
+ENV SPRING_DATASOURCE_PASSWORD=compose-postgres
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO=update
+ENV DISCORD_TOKEN=compose-postgres
+COPY ./target/Lyra*.jar Lyra.jar
+ENTRYPOINT ["java", "-jar", "Lyra.jar"]

@@ -1,15 +1,15 @@
 package horse.boo.bot;
 
-import horse.boo.bot.config.BotConfig;
-import net.dv8tion.jda.api.JDA;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@SpringBootApplication
+@EntityScan("horse.boo")
 public class Lyra {
 
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BotConfig.class);
-        JDA jda = context.getBean("jdaBuilder", JDA.class);
-
+    public static void main(String... args) {
+        SpringApplication.run(Lyra.class, args);
     }
 
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update locale</title>
+    <link rel="stylesheet" th:href="@{/css/edit.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="section">
+    <div class="mainBLOCK">
+        <form th:method="PATCH" th:action="@{/languages/{id}(id=${locale.getId()})}" th:object="${locale}">
+            <div class="NAME">
+                <label for="locale_name">Enter locale name: </label>
+                <input type="text" th:field="*{locale_name}" id="locale_name"/>
+                <div style="color:red" th:if="${#fields.hasErrors('locale_name')}" th:errors="*{locale_name}">Locale
+                    name Error
+                </div>
+            </div>
+            <br/>
+            <div class="localeEN">
+                <label for="locale_en">Enter locale en: </label>
+                <input type="text" th:field="*{locale_en}" id="locale_en"/>
+                <div style="color:red" th:if="${#fields.hasErrors('locale_en')}" th:errors="*{locale_en}">Locale en
+                    Error
+                </div>
+            </div>
+            <br/>
+
+            <div class="localeRU">
+                <label for="locale_ru">Enter locale ru: </label>
+                <input type="text" th:field="*{locale_ru}" id="locale_ru"/>
+                <div style="color:red" th:if="${#fields.hasErrors('locale_ru')}" th:errors="*{locale_ru}">Locale ru
+                    Error
+                </div>
+            </div>
+            <br/>
+            <div class="localeUA">
+                <label for="locale_ua">Enter locale ua: </label>
+                <input type="text" th:field="*{locale_ua}" id="locale_ua"/>
+                <div style="color:red" th:if="${#fields.hasErrors('locale_ua')}" th:errors="*{locale_ua}">Locale ua
+                    Error
+                </div>
+            </div>
+            <br/>
+            <div class="localeCN">
+                <label for="locale_cn">Enter locale cn: </label>
+                <input type="text" th:field="*{locale_cn}" id="locale_cn"/>
+                <div style="color:red" th:if="${#fields.hasErrors('locale_cn')}" th:errors="*{locale_cn}">Locale cn
+                    Error
+                </div>
+                <br/>
+            </div>
+            <div class="button">
+                <input class="button" type="submit" value="Update!"/>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

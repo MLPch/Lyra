@@ -1,0 +1,5 @@
+INSERT INTO public.lyra_locale (id, locale_name, locale_en, locale_ru, locale_ua, locale_cn) VALUES (default, 'greetings_default_0', 'Come in, dear', 'Проходи, дорогуша', 'Проходь, дорогенька', '进来吧，亲爱的');
+INSERT INTO public.lyra_locale (id, locale_name, locale_en, locale_ru, locale_ua, locale_cn) VALUES (default, 'greetings_default_1', 'Welcome to our server!', 'Добро пожаловать на наш сервер!', 'Ласкаво просимо на наш сервер!', '欢迎来到我们的服务器！');
+INSERT INTO public.lyra_locale (id, locale_name, locale_en, locale_ru, locale_ua, locale_cn) VALUES (default, 'greetings_default_2', 'I hope you like it here! ', 'Надеюсь тебе тут понравится! ', 'Сподіваюся тобі тут сподобається! ', '我希望你喜欢这里！ ');
+INSERT INTO public.lyra_locale (id, locale_name, locale_en, locale_ru, locale_ua, locale_cn) VALUES (default, 'greetings_default_3', 'Make yourself at home!', 'Чувствуй себя как дома!', 'Відчувай себе як вдома!', '别客气！');
+INSERT INTO public.lyra_locale (id, locale_name, locale_en, locale_ru, locale_ua, locale_cn) VALUES (default, 'greetings_default_4', 'Time of joining:', 'Время присоединения:', 'Час приєднання:', '加入时间:');
