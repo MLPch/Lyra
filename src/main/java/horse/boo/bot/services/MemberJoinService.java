@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services;
 
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class MemberJoinService extends ListenerAdapter {
-    private final Logger logger = LoggerFactory.getLogger(BotReadyService.class);
+    private final Logger logger = LoggerFactory.getLogger(MemberJoinService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
@@ -39,35 +39,62 @@ public class MemberJoinService extends ListenerAdapter {
         String language = config.getBotLanguage();
         boolean stopped = true;
         String pingUser = user.getAsMention();
-
+        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_stringAbove", guild);
         while (stopped) {
             try {
                 Thread.sleep(700);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            guild.getTextChannelById(config.getWelcomeChannelId()).sendMessage("(" + user.getEffectiveName() + ") " + pingUser).setEmbeds(greetingEmbed(guild, user, language)).queue();
+            if (stringAbove != null) {
+                guild.getTextChannelById(config.getWelcomeChannelId()).sendMessage(stringAbove +
+                        " " + pingUser + " (" + user.getEffectiveName() + ")!\n").setEmbeds(greetingEmbed(guild, user, language)).queue();
+            } else {
+                guild.getTextChannelById(config.getWelcomeChannelId()).sendMessage(
+                        pingUser + " (" + user.getEffectiveName() + ")").setEmbeds(greetingEmbed(guild, user, language)).queue();
+            }
+
             stopped = false;
         }
         guild.getTextChannelById(config.getLogChannelId()).sendMessage("**__A new user has joined:__**" +
                 "\nName: " + user.getName() +
                 "\nID: " + user.getId() +
                 "\nMention: " + user.getAsMention() +
-                "\nAvatar: " + user.getAvatarUrl() +
-                "\nDate: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))).complete();
+                "\nDate of registration: " + user.getTimeCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
+                "\nDate of the event: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
+                "\nAvatar: " + user.getAvatarUrl()).complete();
         logger.info("A new user has joined: " + user);
     }
 
 
     private MessageEmbed greetingEmbed(Guild guild, User user, String language) {
         //TODO: Добавить функционал с кастомными наборами фраз через замену default
+        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_title", guild);
         String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_fieldName", guild);
         String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_fieldValue", guild);
         String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_footerText", guild);
-
         String img = user.getEffectiveAvatarUrl();
 
-        return new EmbedBuilder().addField(fieldName, fieldValue, true).setColor(Color.YELLOW).setThumbnail(img).setTimestamp(OffsetDateTime.now()).setFooter(footerText, guild.getIconUrl()).build();
+        EmbedBuilder eb = new EmbedBuilder();
+        if (title != null) {
+            eb.setTitle(title);
+        }
+        if (fieldValue != null || fieldName != null) {
+            if (fieldName == null) {
+                fieldName = " ";
+            }
+            if (fieldValue == null) {
+                fieldValue = " ";
+            }
+            eb.addField(fieldName, fieldValue, true);
+        }
+        eb.setColor(Color.YELLOW);
+        eb.setThumbnail(img);
+        eb.setTimestamp(OffsetDateTime.now());
+        if (footerText != null) {
+            eb.setFooter(footerText, guild.getIconUrl());
+        }
+        return eb.build();
     }
 
 }

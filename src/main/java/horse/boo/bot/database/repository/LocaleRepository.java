@@ -20,7 +20,8 @@ public interface LocaleRepository extends JpaRepository<LocalesTable, Long> {
 
     Boolean existsByGuildId(Long guildId);
 
-    Optional<LocalesTable> findByGuildId(Long guildId);
+    LocalesTable findByGuildId(Long guildId);
+    LocalesTable findByGuildIdAndLocaleName(Long guildId, String localeName);
 
     List<LocalesTable> findAllByGuildId(Long guildId);
 

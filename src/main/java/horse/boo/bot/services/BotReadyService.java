@@ -1,6 +1,7 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services;
 
 import horse.boo.bot.database.repository.ConfigRepository;
+import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -19,9 +20,11 @@ import java.awt.*;
 public class BotReadyService extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(BotReadyService.class);
     private final ConfigRepository configRepository;
+    private final LocaleRepository localeRepository;
 
-    public BotReadyService(ConfigRepository configRepository) {
+    public BotReadyService(ConfigRepository configRepository, LocaleRepository localeRepository) {
         this.configRepository = configRepository;
+        this.localeRepository = localeRepository;
     }
 
 
@@ -39,6 +42,8 @@ public class BotReadyService extends ListenerAdapter {
             logger.info("Joined a new guild! Name: " + guild.getName());
             logger.info("Saved the default config: " + config);
         }
+        if (localeRepository.getLocalesTableByGuildId(guild.getIdLong()) == null) {
+        }
     }
 
     /**
@@ -53,22 +58,34 @@ public class BotReadyService extends ListenerAdapter {
 //        addField("Что нового:", "\n--Изменены приветствие и прощание." +
 //                "\n--Кол-во необходимых для удаления реакций теперь равно четырём(4)." +
 //                "\n--Баги превращены в фичи.", true);
-        MessageEmbed eb = new EmbedBuilder()
-                .setTitle("Last Update: 19.08.2023")
-                .addField("What's new:", """
-
-                        * Fix old bugs
-                        * Add new bugs
-                        * Added some pieces
-                        * Added disabling of the unrelated functionality and its configuration
-                        * Added support for multiple languages
-                        * Added slash commands (so far only for admins)
-                        * Added auto-ban functionality for a bad mood, so I advise no one to be sad! =)""", false)
-                .setFooter("Lyra_Heartstrings   Ver: 5.0.0")
-                .setImage(guild.getSelfMember().getAvatarUrl())
-                .setColor(Color.GREEN).build();
-        guild.getTextChannelById(config.getBotReadinessChannelId()).sendMessageEmbeds(eb).queue();
+        guild.getTextChannelById(config.getBotReadinessChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "bot")).queue();
+        guild.getTextChannelById(config.getLogChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "log")).queue();
         logger.info("I work in the guild:" + guild.getName());
+    }
+
+    @NotNull
+    private static MessageEmbed getMessageEmbed(Guild guild, String embedType) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("Last Update: 11.09.2023");
+        if (embedType.equals("log")) {
+            eb.addField("What's new:", """
+                    * Fix old bugs
+                    * Add new bugs
+                    * Added some pieces
+                    * Added disabling the functionality of deleting unrelated by slash command(ONLY FOR ADMINS)
+                    * Added dice throwing functionality""", false);
+        } else {
+            eb.addField("What's new:", """
+                    * Fix old bugs
+                    * Add new bugs
+                    * Added some pieces
+                    * Added dice throwing functionality
+                    * Added functionality to capture the government of Africa! =)""", false);
+        }
+        eb.setFooter("Lyra_Heartstrings   Ver: 5.3.5");
+        eb.setImage(guild.getSelfMember().getAvatarUrl());
+        eb.setColor(Color.GREEN).build();
+        return eb.build();
     }
 
 }
