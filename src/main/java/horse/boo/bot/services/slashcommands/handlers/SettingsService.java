@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services.slashcommands.handlers;
 
 
 import horse.boo.bot.database.enums.Languages;
@@ -7,17 +7,14 @@ import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -31,49 +28,18 @@ import java.util.concurrent.TimeUnit;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
 
 @Component
-public class SlashCommandService extends ListenerAdapter {
+public class SettingsService extends ListenerAdapter {
     //TODO: Вынести сюда все шаги по настройке.
 
-    private final Logger logger = LoggerFactory.getLogger(BotReadyService.class);
+    private final Logger logger = LoggerFactory.getLogger(SettingsService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
+
     public String type = "default";
 
-    public SlashCommandService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public SettingsService(ConfigRepository configRepository, LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
-    }
-
-
-    /**
-     * @param event - реагирует на любое сообщение в чате
-     *              <p>
-     *              Первая версия функционала реагирования на команды в чате, пока актуально, но надо бы убрать и сделать слэшами
-     */
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (event.isFromGuild()) {
-            Guild guild = event.getGuild();
-            ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
-            String language = config.getBotLanguage();
-            var msg = event.getMessage();
-            if (msg.getContentRaw().equals("g34tw7b8cg7qt43")) { //for tests
-
-                //TODO: 3 строчки ниже пригодятся при заделке интерфейса смены текстов
-                EntitySelectMenu menu = EntitySelectMenu.create("menu:class", EntitySelectMenu.SelectTarget.CHANNEL)
-                        .setPlaceholder("Select a channel for logs").setRequiredRange(1, 1) // must select exactly one
-                        .build();
-                logger.debug("lyrastart");
-//            localeConfig.setBotId(event.getGuild().getSelfMember().getIdLong());
-                logger.debug("I set myself an ID. Again.");
-//            localeConfig.setBotLanguage(getActualLanguage());
-                System.out.println("Now there will be a language - " + language);
-//            guild.getTextChannelsByName("test", true).get(0).sendMessage(language.getLanguage()).addActionRow().complete();
-//            guild.getTextChannelsByName("test", true).get(0).sendMessage(getActualLanguage().toString()).addActionRow(menu).complete();
-                guild.getTextChannelsByName("test", true).get(0)
-                        .sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_fieldName", guild)).complete();
-            }
-        }
     }
 
     public void languageSelect(@NotNull SlashCommandInteractionEvent event) {
@@ -94,7 +60,7 @@ public class SlashCommandService extends ListenerAdapter {
     }
 
 
-    public void setup(@NotNull SlashCommandInteractionEvent event, String content) {
+    public void setup(@NotNull SlashCommandInteractionEvent event) {
         var guild = event.getGuild();
 
         EmbedBuilder eb = new EmbedBuilder();
@@ -166,9 +132,6 @@ public class SlashCommandService extends ListenerAdapter {
             config.setFunctionDiceRoller(event.getOption("dice_roller").getAsBoolean());
             eb.addField("", "\n✎ The dice-throwing functionality is now __"
                     + getBooleanOnText(event.getOption("dice_roller").getAsBoolean()) + "__", false);
-            if (event.getOption("dice_roller").getAsBoolean()) {
-                zaglushka = true;
-            }
         }
         if (event.getOption("unrelated_deleter") != null) {
             config.setFunctionUnrelatedDeleter(event.getOption("unrelated_deleter").getAsBoolean());
@@ -184,44 +147,21 @@ public class SlashCommandService extends ListenerAdapter {
         eb.setTimestamp(OffsetDateTime.now());
 
         configRepository.save(config);
-        event.reply(content).setEmbeds(eb.build()).setEphemeral(true).queue();
+        event.replyEmbeds(eb.build()).setEphemeral(true).queue();
         guild.getTextChannelById(config.getLogChannelId()).sendMessage("").setEmbeds(eb.build()).queue();
-        for (MessageEmbed.Field field : eb.build().getFields()) {
-            logger.info("CONFIG UPDATED: " + field.getValue());
-        }
+        eb.build().getFields().forEach(field -> logger.info("CONFIG UPDATED: " + field.getValue()));
 
     }
 
-
-    @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-
-        var commands = event.getJDA().updateCommands()
-                .addCommands(getSetupSlashCommandData())
-                .addCommands(getLanguageSelectSlashCommandData());
-        commands.queue();
-
-        // Only accept commands from guilds
-        if (event.getGuild() == null) return;
-        switch (event.getName()) {
-            case "language_select" -> // 2 stage command with a button prompt
-//                start(event, event.getOption("content").getAsString());
-                    languageSelect(event);
-            case "setup" -> setup(event, "");
-            default -> event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
-        }
-
-    }
 
     @NotNull
-    private static SlashCommandData getLanguageSelectSlashCommandData() {
+    public static SlashCommandData getLanguageSelectSlashCommandData() {
         return new CommandDataImpl("language_select", "Choice language")
-//                .addOption(STRING, "content", "ТЕСТОВАЯ КОМАНДА", false)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 
     @NotNull
-    private static SlashCommandData getSetupSlashCommandData() {
+    public static SlashCommandData getSetupSlashCommandData() {
         return new CommandDataImpl("setup", "BOT SETTINGS MENU")
                 .addOption(CHANNEL, "admin_channel", "The channel where admins sit:", false)
                 .addOption(INTEGER, "unrelated-count", "Number of emojis to delete a message:", false)
@@ -262,6 +202,9 @@ public class SlashCommandService extends ListenerAdapter {
             case "language.china" -> {
                 eb.setTitle("选择定制器的中文语言。").setColor(Color.red);
                 lang = Languages.CHINA;
+            }
+            default -> {
+                return;
             }
 
         }

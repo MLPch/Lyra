@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services;
 
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
@@ -17,11 +17,10 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 @Component
 public class MemberLeaveService extends ListenerAdapter {
-    private final Logger logger = LoggerFactory.getLogger(BotReadyService.class);
+    private final Logger logger = LoggerFactory.getLogger(MemberLeaveService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
@@ -40,7 +39,7 @@ public class MemberLeaveService extends ListenerAdapter {
         String language = config.getBotLanguage();
         boolean stopped = true;
         String pingUser = user.getAsMention();
-
+        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_stringAbove", guild);
 
         while (stopped) {
             try {
@@ -48,8 +47,14 @@ public class MemberLeaveService extends ListenerAdapter {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            guild.getTextChannelById(config.getGoodbyeChannelId()).sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_stringAbove", guild)
-                    + " " + pingUser + " (" + user.getEffectiveName() + ")!\n").setEmbeds(farewellEmbed(guild, user, language)).queue();
+            if (stringAbove != null) {
+                guild.getTextChannelById(config.getGoodbyeChannelId()).sendMessage(stringAbove +
+                        " " + pingUser + " (" + user.getEffectiveName() + ")!\n").setEmbeds(farewellEmbed(guild, user, language)).queue();
+            } else {
+                guild.getTextChannelById(config.getGoodbyeChannelId()).sendMessage(
+                        pingUser + " (" + user.getEffectiveName() + ")").setEmbeds(farewellEmbed(guild, user, language)).queue();
+            }
+
             stopped = false;
         }
         guild.getTextChannelById(config.getLogChannelId()).sendMessage("**__The user has left the guild:__**" +
@@ -61,14 +66,35 @@ public class MemberLeaveService extends ListenerAdapter {
         logger.info("The user has left the guild: " + user);
     }
 
-    private MessageEmbed farewellEmbed(Guild guild, User user, String language) {
+
+    @NotNull
+    private MessageEmbed farewellEmbed(Guild guild, @NotNull User user, String language) {
+        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_title", guild);
         String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_fieldName", guild);
         String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_fieldValue", guild);
         String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_footerText", guild);
-
         String img = user.getEffectiveAvatarUrl();
 
-        return new EmbedBuilder().addField(fieldName, fieldValue, true).setColor(Color.BLUE).setThumbnail(img).setTimestamp(OffsetDateTime.now()).setFooter(footerText, guild.getIconUrl()).build();
+        EmbedBuilder eb = new EmbedBuilder();
+        if (title != null) {
+            eb.setTitle(title);
+        }
+        if (fieldValue != null || fieldName != null) {
+            if (fieldName == null) {
+                fieldName = " ";
+            }
+            if (fieldValue == null) {
+                fieldValue = " ";
+            }
+            eb.addField(fieldName, fieldValue, true);
+        }
+        eb.setColor(Color.BLUE);
+        eb.setThumbnail(img);
+        eb.setTimestamp(OffsetDateTime.now());
+        if (footerText != null) {
+            eb.setFooter(footerText, guild.getIconUrl());
+        }
+        return eb.build();
     }
 
 }

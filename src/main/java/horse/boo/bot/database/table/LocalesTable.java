@@ -34,7 +34,7 @@ public class LocalesTable {
     private String localeCN;
 
 
-    protected LocalesTable() {
+    public LocalesTable() {
     }
 
 
@@ -103,6 +103,19 @@ public class LocalesTable {
             case "ukraine" -> getLocaleUA();
             case "china" -> getLocaleCN();
             default -> "";
+        };
+    }
+
+    /**
+     * @param language - Язык изменяемого значения
+     * @param value - Значение для установки
+     */
+    public void setValueByLanguage(@NotNull String language, String value) {
+        switch (language) {
+            case "english" -> setLocaleEN(value);
+            case "russian" -> setLocaleRU(value);
+            case "ukraine" -> setLocaleUA(value);
+            case "china" -> setLocaleCN(value);
         };
     }
 

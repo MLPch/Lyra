@@ -1,12 +1,15 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services.functionals;
 
 import horse.boo.bot.database.repository.ConfigRepository;
+import horse.boo.bot.database.repository.IgnoreChannelRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,19 +20,24 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
 public class UnrelatedDeleteService extends ListenerAdapter {
 
-    private final Logger logger = LoggerFactory.getLogger(BotReadyService.class);
+    private final Logger logger = LoggerFactory.getLogger(UnrelatedDeleteService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
+    private final IgnoreChannelRepository ignoreChannelRepository;
 
     public String type = "default";
 
-    public UnrelatedDeleteService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public UnrelatedDeleteService(ConfigRepository configRepository, LocaleRepository localeRepository, IgnoreChannelRepository ignoreChannelRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
+        this.ignoreChannelRepository = ignoreChannelRepository;
     }
 
     @Override
@@ -38,61 +46,49 @@ public class UnrelatedDeleteService extends ListenerAdapter {
         ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
         String language = config.getBotLanguage();
 
-        if (config.isFunctionUnrelatedDeleter()) {
+        Integer delaySeconds = configRepository.getConfigByGuildId(guild.getIdLong()).getUnrelatedDeleteTimeSec();
+        boolean permissionToDelete = ignoreChannelRepository.existsByChannelId(event.getChannel().getIdLong());
+
+        if (config.isFunctionUnrelatedDeleter() &&
+                !permissionToDelete) {
             long unrelatedEmoteId = config.getUnrelatedEmoteId();
-            long botId = config.getBotId();
             long unrelatedEmoteCount = config.getUnrelatedEmoteCount();
             Message msg = event.getChannel().retrieveMessageById(event.getMessageId()).complete();
             User author = msg.getAuthor();
+            msg.getReactions().forEach(react -> {
 
-            for (MessageReaction react : msg.getReactions()) {
+                var ume = unrelatedMessageEmbed("forUsers", guild, language, author, msg);
+                var lme = unrelatedMessageEmbed("forLogs", guild, language, author, msg);
+
                 if (react.getEmoji().getType() != Emoji.Type.UNICODE &&
                         react.getEmoji().asCustom().getIdLong() == unrelatedEmoteId &&
-                        (!(author.getIdLong() == botId)) &&
                         (!(author.isBot())) &&
                         react.getCount() >= unrelatedEmoteCount) {
-                    msg.delete().complete();
 
-                    String ping = author.getAsMention();
-                    event.getChannel().sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_stringAbove", guild) + ping + "!\n")
-                            .setEmbeds(unrelatedMessageEmbed("forUsers", guild, language, author, msg))
-                            .complete();
+                    msg.delete().queue();
+
+
+                    event.getChannel().sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(
+                                    language, "unrelated_" + type + "_stringAbove", guild) +
+                                    author.getAsMention() + "!\n" + "*удаление через __" + delaySeconds + "__ секунд*")
+                            .setEmbeds(ume).delay(delaySeconds, SECONDS).flatMap(Message::delete).queue();
+
                     if (author.hasPrivateChannel()) {
-                        author.openPrivateChannel().queue(channel -> channel.sendMessageEmbeds(unrelatedMessageEmbed("forUsers", guild, language, author, msg)).complete());
+                        author.openPrivateChannel().queue(channel -> channel.sendMessageEmbeds(ume).complete());
                     }
-                    guild.getTextChannelById(config.getLogChannelId()).sendMessageEmbeds(unrelatedMessageEmbed("forLogs", guild, language, author, msg)).complete();
+                    guild.getTextChannelById(config.getLogChannelId()).sendMessageEmbeds(lme).complete();
                     logger.info("The message [" + msg + "] was responded to by the user [" + event.getUser() + "]");
                 }
-            }
+            });
         }
     }
 
-
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (event.isFromGuild()) {
-            Guild guild = event.getGuild();
-            ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
-            String language = config.getBotLanguage();
-            if (event.getMessage().getAuthor().getIdLong() == config.getBotId() &&
-                    (event.getMessage().getContentRaw().contains(localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_stringAbove", guild))) &&
-                    (event.getMessage().getAuthor().isBot())) {
-                try {
-                    Thread.sleep(config.getUnrelatedDeleteTimeSec() * 1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                event.getMessage().delete().complete();
-            }
-        }
-    }
-
-
-    private MessageEmbed unrelatedMessageEmbed(String titleType, Guild guild, String language, User author, Message msg) {
+    @NotNull
+    private MessageEmbed unrelatedMessageEmbed(String titleType, Guild guild, String language, @NotNull User author, Message msg) {
         String img = author.getEffectiveAvatarUrl();
 
-        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_fieldName", guild);
         String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_title", guild);
+        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_fieldName", guild);
         String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_fieldValue", guild);
         String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_footerText", guild);
 
@@ -118,24 +114,41 @@ public class UnrelatedDeleteService extends ListenerAdapter {
                 content = msg.getContentRaw();
             }
         }
-
+        //TODO: Добавить тех кто удалил в логи
         EmbedBuilder eb = new EmbedBuilder();
-        if (titleType.equals("forUsers")) {
-            eb.setTitle(title);
-        } else if (titleType.equals("forLogs")) {
-            eb.setTitle("The message from the { " + author.getName() + "(" + author.getId() + ") } has been deleted.");
+        if (title != null) {
+            if (titleType.equals("forUsers")) {
+                eb.setTitle(title);
+            } else if (titleType.equals("forLogs")) {
+                eb.setTitle("The message from the { " + author.getName() + "(" + author.getId() + ") } has been deleted.");
+            }
         }
-//        eb.addField(fieldName, fieldValue, false);
+
+        if (fieldValue != null || fieldName != null) {
+            if (fieldName == null) {
+                fieldName = " ";
+            }
+            if (fieldValue == null) {
+                fieldValue = " ";
+            }
+            eb.addField(fieldName, fieldValue, true);
+        }
+
+        // Content Field
         if (titleType.equals("forUsers")) {
             eb.addField("Содержание:", content, false);
         } else if (titleType.equals("forLogs")) {
             eb.addField("Content:", author.getAsMention() + " say: " + content, false);
         }
+        // Place Field
         eb.addField("Place:", msg.getChannel().getAsMention(), false);
+
         eb.setColor(Color.red);
         eb.setThumbnail(img);
         eb.setTimestamp(OffsetDateTime.now());
-        eb.setFooter(footerText, guild.getIconUrl());
+        if (footerText != null) {
+            eb.setFooter(footerText, guild.getIconUrl());
+        }
         return eb.build();
     }
 

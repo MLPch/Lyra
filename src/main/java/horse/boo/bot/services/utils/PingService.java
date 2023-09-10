@@ -1,4 +1,4 @@
-package horse.boo.bot.events;
+package horse.boo.bot.services.utils;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;

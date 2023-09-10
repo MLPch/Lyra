@@ -2,6 +2,7 @@ package horse.boo.bot.database.table;
 
 import horse.boo.bot.database.enums.Languages;
 import net.dv8tion.jda.api.entities.Guild;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 
@@ -63,7 +64,7 @@ public class ConfigsTable {
     public ConfigsTable() {
     }
 
-    public ConfigsTable(Guild guild) {
+    public ConfigsTable(@NotNull Guild guild) {
         this.setGuildId(guild.getIdLong());                                           //ID гильдии
         this.setAdminChannelId(guild.getDefaultChannel().getIdLong());                //ID админского канала
         this.setBotId(guild.getSelfMember().getIdLong());                             //ID бота
@@ -81,6 +82,10 @@ public class ConfigsTable {
         this.setFunctionUnrelatedDeleter(false);                                      //активация функционала удаления сообщений по набору реакций
     }
 
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
