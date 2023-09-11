@@ -55,9 +55,6 @@ public class BotReadyService extends ListenerAdapter {
         Guild guild = event.getGuild();
         ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
 
-//        addField("Что нового:", "\n--Изменены приветствие и прощание." +
-//                "\n--Кол-во необходимых для удаления реакций теперь равно четырём(4)." +
-//                "\n--Баги превращены в фичи.", true);
         guild.getTextChannelById(config.getBotReadinessChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "bot")).queue();
         guild.getTextChannelById(config.getLogChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "log")).queue();
         logger.info("I work in the guild:" + guild.getName());
