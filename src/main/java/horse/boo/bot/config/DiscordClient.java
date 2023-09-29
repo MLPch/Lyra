@@ -26,40 +26,40 @@ public class DiscordClient implements CommandLineRunner {
 
     @Value("${discord.token}")
     private String token;
-    private final BotReadyService botReadyService;
-    private final MemberJoinService memberJoinService;
-    private final MemberLeaveService memberLeaveService;
-    private final PingService pingService;
-    private final UnrelatedDeleteService unrelatedDeleteService;
-    private final SlashCommandService slashCommandService;
     private final EmbedConstructorService embedConstructorService;
-    private final SettingsService settingsService;
+    private final UnrelatedDeleteService unrelatedDeleteService;
     private final IgnoreChannelService ignoreChannelService;
+    private final SlashCommandService slashCommandService;
+    private final MemberLeaveService memberLeaveService;
+    private final MemberJoinService memberJoinService;
     private final DiceRollerService diceRollerService;
+    private final BotReadyService botReadyService;
+    private final SettingsService settingsService;
+    private final PingService pingService;
 
     public static String type = "default";
 
     public DiscordClient(
-            BotReadyService botReadyService,
-            MemberJoinService memberJoinService,
-            MemberLeaveService memberLeaveService,
-            PingService pingService,
-            UnrelatedDeleteService unrelatedDeleteService,
-            SlashCommandService slashCommandService,
             EmbedConstructorService embedConstructorService,
-            SettingsService settingsService,
+            UnrelatedDeleteService unrelatedDeleteService,
             IgnoreChannelService ignoreChannelService,
-            DiceRollerService diceRollerService) {
-        this.botReadyService = botReadyService;
-        this.memberJoinService = memberJoinService;
-        this.memberLeaveService = memberLeaveService;
-        this.pingService = pingService;
-        this.unrelatedDeleteService = unrelatedDeleteService;
-        this.slashCommandService = slashCommandService;
+            SlashCommandService slashCommandService,
+            MemberLeaveService memberLeaveService,
+            MemberJoinService memberJoinService,
+            DiceRollerService diceRollerService,
+            BotReadyService botReadyService,
+            SettingsService settingsService,
+            PingService pingService) {
         this.embedConstructorService = embedConstructorService;
-        this.settingsService = settingsService;
+        this.unrelatedDeleteService = unrelatedDeleteService;
         this.ignoreChannelService = ignoreChannelService;
+        this.slashCommandService = slashCommandService;
+        this.memberLeaveService = memberLeaveService;
+        this.memberJoinService = memberJoinService;
         this.diceRollerService = diceRollerService;
+        this.botReadyService = botReadyService;
+        this.settingsService = settingsService;
+        this.pingService = pingService;
     }
 
     @Override
@@ -74,16 +74,16 @@ public class DiscordClient implements CommandLineRunner {
                 .build();
 
         jda.addEventListener(
-                botReadyService,                        // Оповещение о запуске бота
-                memberJoinService,                      // Оповещение о новом участнике
-                memberLeaveService,                     // Оповещение об уходе участника
-                pingService,                            // Проверка работоспособности бота
-                unrelatedDeleteService,                 // Удаление нерелейтед контента пользователями
-                slashCommandService,                    // Слеш комманды
                 embedConstructorService,                // Конструктор эмбедов
-                settingsService,                        // Настройка конфига
+                unrelatedDeleteService,                 // Удаление нерелейтед контента пользователями
                 ignoreChannelService,                   // Отключение функционала удаления по слешу
-                diceRollerService                       // Функционал дайсов по слешу
+                slashCommandService,                    // Слеш комманды
+                memberLeaveService,                     // Оповещение об уходе участника
+                memberJoinService,                      // Оповещение о новом участнике
+                diceRollerService,                       // Функционал дайсов по слешу
+                botReadyService,                        // Оповещение о запуске бота
+                settingsService,                        // Настройка конфига
+                pingService                            // Проверка работоспособности бота
         );
     }
 }

@@ -32,6 +32,7 @@ import java.util.Objects;
 
 @Component
 public class EmbedConstructorService extends ListenerAdapter {
+    //TODO: Пометить завершённые классы от которых нет наследования как final
     private final Logger logger = LoggerFactory.getLogger(EmbedConstructorService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
