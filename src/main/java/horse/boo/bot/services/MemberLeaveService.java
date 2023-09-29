@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -62,8 +63,8 @@ public class MemberLeaveService extends ListenerAdapter {
                 "\nID: " + user.getId() +
                 "\nMention: " + user.getAsMention() +
                 "\nAvatar: " + user.getAvatarUrl() +
-                "\nDate: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))).complete();
-        logger.info("The user has left the guild: " + user);
+                "\nDate: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC))).complete();
+        logger.info("The user has left the guild: " + user + " from " + guild);
     }
 
 

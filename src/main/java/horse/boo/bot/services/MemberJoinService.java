@@ -1,5 +1,6 @@
 package horse.boo.bot.services;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -60,10 +62,10 @@ public class MemberJoinService extends ListenerAdapter {
                 "\nName: " + user.getName() +
                 "\nID: " + user.getId() +
                 "\nMention: " + user.getAsMention() +
-                "\nDate of registration: " + user.getTimeCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
-                "\nDate of the event: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
+                "\nDate of registration: " + user.getTimeCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC)) +
+                "\nDate of the event: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC)) +
                 "\nAvatar: " + user.getAvatarUrl()).complete();
-        logger.info("A new user has joined: " + user);
+        logger.info("A new user has joined: " + user + " in " + guild);
     }
 
 
@@ -97,4 +99,12 @@ public class MemberJoinService extends ListenerAdapter {
         return eb.build();
     }
 
+    @Override
+    public String toString() {
+        return "MemberJoinService{" +
+                "configRepository=" + configRepository.toString() +
+                ", localeRepository=" + localeRepository.toString() +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
