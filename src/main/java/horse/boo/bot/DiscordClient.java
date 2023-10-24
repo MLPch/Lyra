@@ -1,16 +1,14 @@
-package horse.boo.bot.config;
+package horse.boo.bot;
 
 import horse.boo.bot.services.BotReadyService;
 import horse.boo.bot.services.MemberJoinService;
 import horse.boo.bot.services.MemberLeaveService;
-import horse.boo.bot.services.functionals.DiceRollerService;
-import horse.boo.bot.services.functionals.UnrelatedDeleteService;
-import horse.boo.bot.services.slashcommands.SlashCommandService;
-import horse.boo.bot.services.slashcommands.handlers.EmbedConstructorService;
-import horse.boo.bot.services.slashcommands.handlers.IgnoreChannelService;
-import horse.boo.bot.services.slashcommands.handlers.SettingsService;
+import horse.boo.bot.services.slashcommands.*;
+import horse.boo.bot.services.slashcommands.functionals.DiceRollerService;
+import horse.boo.bot.services.slashcommands.functionals.UnrelatedDeleteService;
 import horse.boo.bot.services.utils.PingService;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
@@ -26,10 +24,11 @@ public class DiscordClient implements CommandLineRunner {
 
     @Value("${discord.token}")
     private String token;
+    private final MessageAboutUpdateService messageAboutUpdateService;
     private final EmbedConstructorService embedConstructorService;
+    private final SlashCommandInteraction slashCommandInteraction;
     private final UnrelatedDeleteService unrelatedDeleteService;
-    private final IgnoreChannelService ignoreChannelService;
-    private final SlashCommandService slashCommandService;
+    private final FunctionalSwitcher functionalSwitcher;
     private final MemberLeaveService memberLeaveService;
     private final MemberJoinService memberJoinService;
     private final DiceRollerService diceRollerService;
@@ -37,23 +36,25 @@ public class DiscordClient implements CommandLineRunner {
     private final SettingsService settingsService;
     private final PingService pingService;
 
-    public static String type = "default";
+    public static String TYPE = "default";
 
     public DiscordClient(
+            MessageAboutUpdateService messageAboutUpdateService,
             EmbedConstructorService embedConstructorService,
+            SlashCommandInteraction slashCommandInteraction,
             UnrelatedDeleteService unrelatedDeleteService,
-            IgnoreChannelService ignoreChannelService,
-            SlashCommandService slashCommandService,
+            FunctionalSwitcher functionalSwitcher,
             MemberLeaveService memberLeaveService,
             MemberJoinService memberJoinService,
             DiceRollerService diceRollerService,
             BotReadyService botReadyService,
             SettingsService settingsService,
             PingService pingService) {
+        this.messageAboutUpdateService = messageAboutUpdateService;
         this.embedConstructorService = embedConstructorService;
+        this.slashCommandInteraction = slashCommandInteraction;
         this.unrelatedDeleteService = unrelatedDeleteService;
-        this.ignoreChannelService = ignoreChannelService;
-        this.slashCommandService = slashCommandService;
+        this.functionalSwitcher = functionalSwitcher;
         this.memberLeaveService = memberLeaveService;
         this.memberJoinService = memberJoinService;
         this.diceRollerService = diceRollerService;
@@ -71,13 +72,15 @@ public class DiscordClient implements CommandLineRunner {
                 .setBulkDeleteSplittingEnabled(false)
                 .setCompression(Compression.NONE)
                 .setActivity(Activity.playing("pi-pu-pa-pi-pa"))        // Активность бота
+                .setStatus(OnlineStatus.ONLINE)
                 .build();
 
         jda.addEventListener(
+                messageAboutUpdateService,
                 embedConstructorService,                // Конструктор эмбедов
+                slashCommandInteraction,                    // Слеш комманды
                 unrelatedDeleteService,                 // Удаление нерелейтед контента пользователями
-                ignoreChannelService,                   // Отключение функционала удаления по слешу
-                slashCommandService,                    // Слеш комманды
+                functionalSwitcher,                   // Отключение функционала удаления по слешу
                 memberLeaveService,                     // Оповещение об уходе участника
                 memberJoinService,                      // Оповещение о новом участнике
                 diceRollerService,                       // Функционал дайсов по слешу

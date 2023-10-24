@@ -1,22 +1,21 @@
-package horse.boo.bot.services.functionals;
+package horse.boo.bot.services.slashcommands.functionals;
 
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
+import horse.boo.bot.database.table.ConfigsTable;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.Interaction;
-import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
-import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.util.Objects;
-
-import static net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions.enabledFor;
-import static net.dv8tion.jda.api.interactions.commands.OptionType.STRING;
 
 @Component
 public class DiceRollerService extends ListenerAdapter {
@@ -40,15 +36,10 @@ public class DiceRollerService extends ListenerAdapter {
         this.localeRepository = localeRepository;
     }
 
-    @NotNull
-    public static SlashCommandData getRollCommandData() {
-        return new CommandDataImpl("roll", "Enter a value or press Enter to select")
-                .addOption(STRING, "dice", "From 1d2 to 100d100", false)
-                .setDefaultPermissions(enabledFor(Permission.VIEW_CHANNEL));
-    }
-
     public void roll(@NotNull SlashCommandInteractionEvent event, String diceRow) {
-        if (configRepository.getConfigByGuildId(event.getGuild().getIdLong()).isFunctionDiceRoller()) {
+        Guild guild = event.getGuild();
+        ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
+        if (config.isFunctionUnrelatedDeleter() && configRepository.getConfigByGuildId(event.getGuild().getIdLong()).isFunctionDiceRoller()) {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Color.WHITE);
             if (diceRow.contains("custom")) {
@@ -60,12 +51,12 @@ public class DiceRollerService extends ListenerAdapter {
                                 Button.primary("d20", "D20"),
                                 Button.primary("d12", "D12"),
                                 Button.primary("d10", "D10"),
-                                Button.danger("d2", "Coin"))
+                                Button.secondary("d2", "Coin"))
                         .addActionRow(
                                 Button.primary("d8", "D8"),
                                 Button.primary("d6", "D6"),
                                 Button.primary("d4", "D4"),
-                                Button.danger("custom_dice", "My dice"))
+                                Button.secondary("custom_dice", "My dice"))
                         .setEphemeral(true).queue();
             } else {
                 if (validCheck(event, null, null, diceRow)) {

@@ -42,7 +42,7 @@ public class ConfigsTable {
     private Long logChannelId;
 
     @Column(name = "bot_readiness_channel_id")
-    private Long botReadinessChannelId;
+    private Long botInfoChannelId;
 
     @Column(name = "unrelated_delete_time_sec")
     private Integer unrelatedDeleteTimeSec;
@@ -51,7 +51,7 @@ public class ConfigsTable {
     private boolean functionMusicPlayer;
 
     @Column(name = "function_role_saver")
-    private boolean functionRoleSaver;
+    private boolean functionRememberingRoles;
 
 
     @Column(name = "function_dice_roller")
@@ -74,10 +74,10 @@ public class ConfigsTable {
         this.setWelcomeChannelId(guild.getDefaultChannel().getIdLong());              //ID канала для уведомлений о приходе нового юзера
         this.setGoodbyeChannelId(guild.getDefaultChannel().getIdLong());              //ID канала для уведомлений об уходе юзера
         this.setLogChannelId(0L);                                                     //ID канала для логов
-        this.setBotReadinessChannelId(guild.getDefaultChannel().getIdLong());         //ID канала для сообщений о готовности бота или сообщений с обновлениях
+        this.setBotInfoChannelId(guild.getDefaultChannel().getIdLong());              //ID канала для сообщений о готовности бота или сообщений с обновлениях
         this.setUnrelatedDeleteTimeSec(0);                                            //кол-во секунд в течении которых отображается уведомление об удалении сообщения
         this.setFunctionMusicPlayer(false);                                           //активация функционала музыкального бота
-        this.setFunctionRoleSaver(false);                                             //активация функционала сохранения ролей при выходе и повторном входе пользователя
+        this.setFunctionRememberingRoles(false);                                      //активация функционала сохранения ролей при выходе и повторном входе пользователя
         this.setFunctionDiceRoller(false);                                            //активация функционала броска кубов
         this.setFunctionUnrelatedDeleter(false);                                      //активация функционала удаления сообщений по набору реакций
     }
@@ -163,12 +163,12 @@ public class ConfigsTable {
         this.logChannelId = logChannelId;
     }
 
-    public Long getBotReadinessChannelId() {
-        return botReadinessChannelId;
+    public Long getBotInfoChannelId() {
+        return botInfoChannelId;
     }
 
-    public void setBotReadinessChannelId(Long botReadinessChannelId) {
-        this.botReadinessChannelId = botReadinessChannelId;
+    public void setBotInfoChannelId(Long botInfoChannelId) {
+        this.botInfoChannelId = botInfoChannelId;
     }
 
     public Integer getUnrelatedDeleteTimeSec() {
@@ -187,12 +187,12 @@ public class ConfigsTable {
         this.functionMusicPlayer = functionMusicPlayer;
     }
 
-    public boolean isFunctionRoleSaver() {
-        return functionRoleSaver;
+    public boolean isFunctionRememberingRoles() {
+        return functionRememberingRoles;
     }
 
-    public void setFunctionRoleSaver(boolean functionRoleSaver) {
-        this.functionRoleSaver = functionRoleSaver;
+    public void setFunctionRememberingRoles(boolean functionRememberingRoles) {
+        this.functionRememberingRoles = functionRememberingRoles;
     }
 
     public boolean isFunctionDiceRoller() {
@@ -225,10 +225,10 @@ public class ConfigsTable {
                 ", welcomeChannelId=" + welcomeChannelId +
                 ", goodbyeChannelId=" + goodbyeChannelId +
                 ", logChannelId=" + logChannelId +
-                ", botReadinessChannelId=" + botReadinessChannelId +
+                ", botInfoChannelId=" + botInfoChannelId +
                 ", unrelatedDeleteTimeSec=" + unrelatedDeleteTimeSec +
                 ", functionMusicPlayer=" + functionMusicPlayer +
-                ", functionRoleSaver=" + functionRoleSaver +
+                ", functionRememberingRoles=" + functionRememberingRoles +
                 ", functionDiceRoller=" + functionDiceRoller +
                 ", functionUnrelatedDeleter=" + functionUnrelatedDeleter +
                 '}';
