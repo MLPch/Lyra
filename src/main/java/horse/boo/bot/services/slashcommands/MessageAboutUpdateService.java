@@ -71,9 +71,7 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         return """
                 * Fix old bugs
                 * Add new bugs
-                * Added some pieces
-                * Added disabling the functionality of deleting unrelated by slash command(ONLY FOR ADMINS)
-                * Added dice throwing functionality
+                * Added new update command for admins (The "send_update" command sends update messages to the information channel from the bot and to the logs channel)
                 """;
     }
 
@@ -83,8 +81,6 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         return """
                 * Fix old bugs
                 * Add new bugs
-                * Added some pieces
-                * Added dice throwing functionality
                 * Added functionality to capture the government of Africa! =)
                 """;
     }
