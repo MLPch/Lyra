@@ -16,5 +16,6 @@ spring:
         password: ${SPRING_DATASOURCE_PASSWORD:compose-postgres}
 discord:
     token: ${DISCORD_TOKEN:compose-postgres}
+
 #spring.sql.init.schema-locations=classpath*:database/dbLog.sql
 #spring.sql.init.data-locations=classpath*:database/populateDB.sql

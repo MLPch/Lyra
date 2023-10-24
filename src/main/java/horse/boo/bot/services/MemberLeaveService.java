@@ -19,13 +19,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import static horse.boo.bot.DiscordClient.TYPE;
+
 @Component
 public class MemberLeaveService extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(MemberLeaveService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
-
-    public String type = "default";
 
     public MemberLeaveService(ConfigRepository configRepository, LocaleRepository localeRepository) {
         this.configRepository = configRepository;
@@ -40,7 +40,7 @@ public class MemberLeaveService extends ListenerAdapter {
         String language = config.getBotLanguage();
         boolean stopped = true;
         String pingUser = user.getAsMention();
-        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_stringAbove", guild);
+        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + TYPE + "_stringAbove", guild);
 
         while (stopped) {
             try {
@@ -70,10 +70,10 @@ public class MemberLeaveService extends ListenerAdapter {
 
     @NotNull
     private MessageEmbed farewellEmbed(Guild guild, @NotNull User user, String language) {
-        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_title", guild);
-        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_fieldName", guild);
-        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_fieldValue", guild);
-        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + type + "_footerText", guild);
+        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + TYPE + "_title", guild);
+        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + TYPE + "_fieldName", guild);
+        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + TYPE + "_fieldValue", guild);
+        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "farewell_" + TYPE + "_footerText", guild);
         String img = user.getEffectiveAvatarUrl();
 
         EmbedBuilder eb = new EmbedBuilder();

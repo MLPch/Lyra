@@ -3,18 +3,20 @@ package horse.boo.bot.services;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
-import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
+import static net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions.enabledFor;
+import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
 
 @Component
 public class BotReadyService extends ListenerAdapter {
@@ -43,6 +45,7 @@ public class BotReadyService extends ListenerAdapter {
             logger.info("Saved the default config: " + config);
         }
         if (localeRepository.getLocalesTableByGuildId(guild.getIdLong()) == null) {
+            //TODO: Написать функционал создания языкового набора при отсутствии
         }
     }
 
@@ -53,36 +56,47 @@ public class BotReadyService extends ListenerAdapter {
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
         Guild guild = event.getGuild();
-        ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
-
-        guild.getTextChannelById(config.getBotReadinessChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "bot")).queue();
-        guild.getTextChannelById(config.getLogChannelId()).sendMessageEmbeds(getMessageEmbed(guild, "log")).queue();
         logger.info("I work in the guild:" + guild.getName());
-    }
 
-    @NotNull
-    private static MessageEmbed getMessageEmbed(Guild guild, String embedType) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Last Update: 11.09.2023");
-        if (embedType.equals("log")) {
-            eb.addField("What's new:", """
-                    * Fix old bugs
-                    * Add new bugs
-                    * Added some pieces
-                    * Added disabling the functionality of deleting unrelated by slash command(ONLY FOR ADMINS)
-                    * Added dice throwing functionality""", false);
-        } else {
-            eb.addField("What's new:", """
-                    * Fix old bugs
-                    * Add new bugs
-                    * Added some pieces
-                    * Added dice throwing functionality
-                    * Added functionality to capture the government of Africa! =)""", false);
-        }
-        eb.setFooter("Lyra_Heartstrings   Ver: 5.3.5");
-        eb.setImage(guild.getSelfMember().getAvatarUrl());
-        eb.setColor(Color.GREEN).build();
-        return eb.build();
+        event.getGuild().updateCommands().addCommands(
+                Commands.slash("select_language", "Choice language")
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
+                Commands.slash("setup", "BOT SETTINGS MENU")
+                        .addOption(CHANNEL, "admin_channel", "The channel where admins sit:", false)
+                        .addOption(INTEGER, "unrelated-count", "Number of emojis to delete a message:", false)
+                        .addOption(STRING, "unrelated-emote", "Emoji ID to delete unrelated:", false)
+                        .addOption(CHANNEL, "join-channel", "The channel in which the bot will welcome users:", false)
+                        .addOption(CHANNEL, "leave-channel", "The channel in which the bot will say goodbye to users:", false)
+                        .addOption(CHANNEL, "logs", "The channel to which the logs will fly:", false)
+                        .addOption(CHANNEL, "bot_info_channel", "The channel into which messages about bot updates will fall:", false)
+                        .addOption(INTEGER, "unrelated_delete_time", "Delay time of the unrelated deletion message (in seconds):", false)
+                        .addOption(BOOLEAN, "music_player", "Enabling the music player functionality:", false)
+                        .addOption(BOOLEAN, "remembering_roles", "Enabling the role remembering functionality:", false)
+                        .addOption(BOOLEAN, "dice_roller", "Enabling the functionality for throwing dices:", false)
+                        .addOption(BOOLEAN, "unrelated_deleter", "Enabling the unrelated removal functionality:", false)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
+                Commands.slash("disable_functionals_in_channel", "Disable functionals in select channel")
+                        .addOption(CHANNEL, "disable_in_channel", "The channel for which you need to disable the functionality:", true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
+                Commands.slash("enable_functionals_in_channel", "Enable functionals in select channel")
+                        .addOption(CHANNEL, "enable_in_channel", "The channel for which you need to enable the functionality:", true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
+                Commands.slash("constructor", "Embeds constructor").addSubcommands()
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
+                Commands.slash("roll", "Enter a value or press Enter to select")
+                        .addOption(STRING, "dice", "From 1d2 to 100d100", false)
+                        .setDefaultPermissions(enabledFor(Permission.VIEW_CHANNEL)),
+
+                Commands.slash("send_update", "!!!ONLY FOR THE BOT DEVELOPER!!!")
+                        .setDefaultPermissions(enabledFor(Permission.ADMINISTRATOR))
+
+        ).queue();
+
     }
 
 }

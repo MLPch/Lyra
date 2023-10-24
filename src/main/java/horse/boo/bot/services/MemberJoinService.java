@@ -1,6 +1,5 @@
 package horse.boo.bot.services;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
@@ -20,13 +19,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import static horse.boo.bot.DiscordClient.TYPE;
+
 @Component
 public class MemberJoinService extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(MemberJoinService.class);
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
-    public String type = "default";
 
     public MemberJoinService(ConfigRepository configRepository, LocaleRepository localeRepository) {
         this.configRepository = configRepository;
@@ -41,7 +41,7 @@ public class MemberJoinService extends ListenerAdapter {
         String language = config.getBotLanguage();
         boolean stopped = true;
         String pingUser = user.getAsMention();
-        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_stringAbove", guild);
+        String stringAbove = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + TYPE + "_stringAbove", guild);
         while (stopped) {
             try {
                 Thread.sleep(700);
@@ -71,10 +71,10 @@ public class MemberJoinService extends ListenerAdapter {
 
     private MessageEmbed greetingEmbed(Guild guild, User user, String language) {
         //TODO: Добавить функционал с кастомными наборами фраз через замену default
-        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_title", guild);
-        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_fieldName", guild);
-        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_fieldValue", guild);
-        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + type + "_footerText", guild);
+        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + TYPE + "_title", guild);
+        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + TYPE + "_fieldName", guild);
+        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + TYPE + "_fieldValue", guild);
+        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "greetings_" + TYPE + "_footerText", guild);
         String img = user.getEffectiveAvatarUrl();
 
         EmbedBuilder eb = new EmbedBuilder();
@@ -104,7 +104,7 @@ public class MemberJoinService extends ListenerAdapter {
         return "MemberJoinService{" +
                 "configRepository=" + configRepository.toString() +
                 ", localeRepository=" + localeRepository.toString() +
-                ", type='" + type + '\'' +
+                ", type='" + TYPE + '\'' +
                 '}';
     }
 }

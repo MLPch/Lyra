@@ -1,4 +1,4 @@
-package horse.boo.bot.services.functionals;
+package horse.boo.bot.services.slashcommands.functionals;
 
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.IgnoreChannelRepository;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
+import static horse.boo.bot.DiscordClient.TYPE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
@@ -32,7 +32,6 @@ public class UnrelatedDeleteService extends ListenerAdapter {
     private final LocaleRepository localeRepository;
     private final IgnoreChannelRepository ignoreChannelRepository;
 
-    public String type = "default";
 
     public UnrelatedDeleteService(ConfigRepository configRepository, LocaleRepository localeRepository, IgnoreChannelRepository ignoreChannelRepository) {
         this.configRepository = configRepository;
@@ -69,7 +68,7 @@ public class UnrelatedDeleteService extends ListenerAdapter {
 
 
                     event.getChannel().sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(
-                                    language, "unrelated_" + type + "_stringAbove", guild) +
+                                    language, "unrelated_" + TYPE + "_stringAbove", guild) +
                                     author.getAsMention() + "!\n" + "*удаление через __" + delaySeconds + "__ секунд*")
                             .setEmbeds(ume).delay(delaySeconds, SECONDS).flatMap(Message::delete).queue();
 
@@ -87,10 +86,10 @@ public class UnrelatedDeleteService extends ListenerAdapter {
     private MessageEmbed unrelatedMessageEmbed(String titleType, Guild guild, String language, @NotNull User author, Message msg) {
         String img = author.getEffectiveAvatarUrl();
 
-        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_title", guild);
-        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_fieldName", guild);
-        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_fieldValue", guild);
-        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + type + "_footerText", guild);
+        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_title", guild);
+        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_fieldName", guild);
+        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_fieldValue", guild);
+        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_footerText", guild);
 
         if (!author.isBot()) {
             try {
