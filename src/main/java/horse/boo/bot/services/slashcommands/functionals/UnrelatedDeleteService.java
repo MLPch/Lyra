@@ -107,8 +107,8 @@ public class UnrelatedDeleteService extends ListenerAdapter {
                 content = "*there were some files here*";
             }
         } else {
-            if (msg.getContentRaw().length() >= 1024) {
-                content = msg.getContentRaw().substring(0, 800);
+            if (msg.getContentRaw().length() >= 900) {
+                content = msg.getContentRaw().substring(0, 900);
             } else {
                 content = msg.getContentRaw();
             }

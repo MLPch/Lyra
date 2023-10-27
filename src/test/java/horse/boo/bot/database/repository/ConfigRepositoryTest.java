@@ -65,10 +65,10 @@ public class ConfigRepositoryTest extends ConfigsTable {
         expected.setWelcomeChannelId(TEST_WELCOME_CHANNEL_ID);
         expected.setGoodbyeChannelId(TEST_GOODBYE_CHANNEL_ID);
         expected.setLogChannelId(TEST_LOG_CHANNEL_ID);
-        expected.setBotReadinessChannelId(TEST_BOT_READINESS_CHANNEL_ID);
+        expected.setBotInfoChannelId(TEST_BOT_READINESS_CHANNEL_ID);
         expected.setUnrelatedDeleteTimeSec(TEST_UNRELATED_DELETE_TIME_SEC);
         expected.setFunctionMusicPlayer(TEST_FUNCTION_MUSIC_PLAYER);
-        expected.setFunctionRoleSaver(TEST_FUNCTION_ROLE_SAVER);
+        expected.setFunctionRememberingRoles(TEST_FUNCTION_ROLE_SAVER);
         expected.setFunctionDiceRoller(TEST_FUNCTION_DICE_ROLLER);
         expected.setFunctionUnrelatedDeleter(TEST_FUNCTION_UNRELATED_DELETER);
 

@@ -71,22 +71,22 @@ public class DiscordClient implements CommandLineRunner {
                 .disableCache(CacheFlag.SCHEDULED_EVENTS, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
                 .setCompression(Compression.NONE)
-                .setActivity(Activity.playing("pi-pu-pa-pi-pa"))        // Активность бота
+                .setActivity(Activity.listening("Anthropology"))        // Активность бота
                 .setStatus(OnlineStatus.ONLINE)
                 .build();
 
         jda.addEventListener(
                 messageAboutUpdateService,
                 embedConstructorService,                // Конструктор эмбедов
-                slashCommandInteraction,                    // Слеш комманды
+                slashCommandInteraction,                // Слеш комманды
                 unrelatedDeleteService,                 // Удаление нерелейтед контента пользователями
-                functionalSwitcher,                   // Отключение функционала удаления по слешу
+                functionalSwitcher,                     // Отключение функционала удаления по слешу
                 memberLeaveService,                     // Оповещение об уходе участника
                 memberJoinService,                      // Оповещение о новом участнике
-                diceRollerService,                       // Функционал дайсов по слешу
+                diceRollerService,                      // Функционал дайсов по слешу
                 botReadyService,                        // Оповещение о запуске бота
                 settingsService,                        // Настройка конфига
-                pingService                            // Проверка работоспособности бота
+                pingService                             // Проверка работоспособности бота
         );
     }
 }

@@ -56,7 +56,7 @@ public class BotReadyService extends ListenerAdapter {
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
         Guild guild = event.getGuild();
-        logger.info("I work in the guild:" + guild.getName());
+        logger.info("I work in the guild:" + guild.getName() + " id:" + guild.getIdLong());
 
         event.getGuild().updateCommands().addCommands(
                 Commands.slash("select_language", "Choice language")

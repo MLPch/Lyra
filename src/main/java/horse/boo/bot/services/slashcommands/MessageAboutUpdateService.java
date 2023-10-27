@@ -52,14 +52,14 @@ public class MessageAboutUpdateService extends ListenerAdapter {
     @NotNull
     private static MessageEmbed getMessageEmbed(Guild guild, @NotNull String embedType) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Last Update: 11.09.2023");
+        eb.setTitle("Last Update: 24.11.2023");
         String name = "What's new:";
         String value = getValueForUsers();
         if (embedType.equals("log")) {
             value = getValueForLogs();
         }
         eb.addField(name, value, false);
-        eb.setFooter("Lyra_Heartstrings   Ver: 5.3.5");
+        eb.setFooter("Lyra_Heartstrings   Ver: 5.4.6");
         eb.setImage(guild.getSelfMember().getAvatarUrl());
         eb.setColor(Color.GREEN).build();
         return eb.build();
