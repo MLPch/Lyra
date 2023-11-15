@@ -21,7 +21,7 @@
     <div class="textBLOCK">
         <div th:each="config : ${all_configs}">
             <a th:href="@{/configs/{guild_id}(guild_id=${config.getGuildId()})}"
-               th:text="'Guild:' + ${config.getGuildName()}">ConfigSet</a>
+               th:text="'Guild: ' + ${config.getGuildName()}">ConfigSet</a>
         </div>
     </div>
 </div>
