@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  app:
+    image: 'lyra:latest'
+    restart: always
+    build:
+      context: .
+    container_name: lyra
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/
+      - SPRING_DATASOURCE_USERNAME=
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - DISCORD_TOKEN=
