@@ -33,3 +33,6 @@ build/
 .vscode/
 /.mvn/
 /Lyra.jar
+/.github/workflows/dependency-review.yml
+/mvnw
+/mvnw.cmd
