@@ -1,9 +1,9 @@
 package horse.boo.bot.database.table;
 
-import net.bytebuddy.utility.nullability.MaybeNull;
+
+import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = "locale")
@@ -26,11 +26,9 @@ public class LocalesTable {
     private String localeRU;
 
     @Column(name = "locale_ua")
-    @MaybeNull
     private String localeUA;
 
     @Column(name = "locale_cn")
-    @MaybeNull
     private String localeCN;
 
 
@@ -41,7 +39,9 @@ public class LocalesTable {
     public long getId() {
         return id;
     }
-
+    public void setId(Long id) {
+        this.id = id;
+    }
     public long getGuildId() {
         return guildId;
     }
@@ -74,21 +74,21 @@ public class LocalesTable {
         this.localeRU = localeRU;
     }
 
-    @MaybeNull
+
     public String getLocaleUA() {
         return localeUA;
     }
 
-    public void setLocaleUA(@MaybeNull String localeUA) {
+    public void setLocaleUA(String localeUA) {
         this.localeUA = localeUA;
     }
 
-    @MaybeNull
+
     public String getLocaleCN() {
         return localeCN;
     }
 
-    public void setLocaleCN(@MaybeNull String localeCN) {
+    public void setLocaleCN(String localeCN) {
         this.localeCN = localeCN;
     }
 

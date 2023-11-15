@@ -22,7 +22,7 @@
 //@PropertySource("classpath:application.yml")
 //@ComponentScan("horse.boo.bot")
 //@EnableWebMvc
-//public class SpringJdbcConfig implements WebMvcConfigurer {
+//public class SpringConfig implements WebMvcConfigurer {
 //    @Value("${spring.datasource.url}")
 //    private String dbURL;
 //    @Value("${spring.datasource.username}")
@@ -34,7 +34,7 @@
 //    private final ApplicationContext applicationContext;
 //
 //    @Autowired
-//    public SpringJdbcConfig(ApplicationContext applicationContext) {
+//    public SpringConfig(ApplicationContext applicationContext) {
 //        this.applicationContext = applicationContext;
 //    }
 //

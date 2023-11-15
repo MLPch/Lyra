@@ -24,7 +24,8 @@ public class BotReadyService extends ListenerAdapter {
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
-    public BotReadyService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public BotReadyService(ConfigRepository configRepository,
+                           LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
     }
@@ -44,7 +45,7 @@ public class BotReadyService extends ListenerAdapter {
             logger.info("Joined a new guild! Name: " + guild.getName());
             logger.info("Saved the default config: " + config);
         }
-        if (localeRepository.getLocalesTableByGuildId(guild.getIdLong()) == null) {
+        if (localeRepository.findLocalesTableByGuildId(guild.getIdLong()) == null) {
             //TODO: Написать функционал создания языкового набора при отсутствии
         }
     }
@@ -56,7 +57,7 @@ public class BotReadyService extends ListenerAdapter {
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
         Guild guild = event.getGuild();
-        logger.info("I work in the guild:" + guild.getName());
+        logger.info("I work in the guild: " + guild.getName() + " (id=" + guild.getIdLong() + ")");
 
         event.getGuild().updateCommands().addCommands(
                 Commands.slash("select_language", "Choice language")

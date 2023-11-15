@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.util.Objects;
 
 @Component
 public class MessageAboutUpdateService extends ListenerAdapter {
@@ -33,12 +34,12 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         for (ConfigsTable configsTable : allConfigs) {
             if (event.getJDA().getGuildById(configsTable.getGuildId()) != null) {
 
-                event.getJDA().getGuildById(configsTable.getGuildId())
-                        .getTextChannelById(configsTable.getLogChannelId())
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(configsTable.getGuildId()))
+                                .getTextChannelById(configsTable.getLogChannelId()))
                         .sendMessageEmbeds(getMessageEmbed(guild, "log")).queue();
 
-                event.getJDA().getGuildById(configsTable.getGuildId())
-                        .getTextChannelById(configsTable.getBotInfoChannelId())
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(configsTable.getGuildId()))
+                                .getTextChannelById(configsTable.getBotInfoChannelId()))
                         .sendMessageEmbeds(getMessageEmbed(guild, "bot")).queue();
 
             }
@@ -52,14 +53,14 @@ public class MessageAboutUpdateService extends ListenerAdapter {
     @NotNull
     private static MessageEmbed getMessageEmbed(Guild guild, @NotNull String embedType) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Last Update: 11.09.2023");
+        eb.setTitle("Last Update: 24.11.2023");
         String name = "What's new:";
         String value = getValueForUsers();
         if (embedType.equals("log")) {
             value = getValueForLogs();
         }
         eb.addField(name, value, false);
-        eb.setFooter("Lyra_Heartstrings   Ver: 5.3.5");
+        eb.setFooter("Lyra_Heartstrings   Ver: 5.4.6");
         eb.setImage(guild.getSelfMember().getAvatarUrl());
         eb.setColor(Color.GREEN).build();
         return eb.build();
@@ -71,9 +72,7 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         return """
                 * Fix old bugs
                 * Add new bugs
-                * Added some pieces
-                * Added disabling the functionality of deleting unrelated by slash command(ONLY FOR ADMINS)
-                * Added dice throwing functionality
+                * Added new update command for admins (The "send_update" command sends update messages to the information channel from the bot and to the logs channel)
                 """;
     }
 
@@ -83,8 +82,6 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         return """
                 * Fix old bugs
                 * Add new bugs
-                * Added some pieces
-                * Added dice throwing functionality
                 * Added functionality to capture the government of Africa! =)
                 """;
     }

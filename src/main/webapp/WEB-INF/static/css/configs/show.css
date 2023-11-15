@@ -1,0 +1,17 @@
+.textBLOCK {
+    flex-flow: column;
+    color: darkseagreen;
+}
+
+
+.mainBLOCK {
+    width: fit-content;
+    border-radius: 10px;
+    padding: 30px;
+    font-size: 25px;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    margin: 5% auto auto 100px;
+    text-align: center;
+    line-height: 1;
+}

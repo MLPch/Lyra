@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style th:inline="text">
+        body {
+            background-image: url("/images/backgrounds/sad_lyra.png");
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/configs/show.css}"/>
+    <link rel="stylesheet" th:href="@{/css/configs/elements/button52.css}"/>
+    <title>Config</title>
+
+</head>
+<body>
+<div class="mainBLOCK">
+    <div class="textBLOCK">
+        <p th:text="${'Guild ID: ' + config.getGuildId()}">VALUE</p>
+        <p th:text="${'Guild name: ' + config.getGuildName()}">VALUE</p>
+        <p th:text="${'Admins channel ID: ' + config.getAdminChannelId()}">VALUE</p>
+        <p th:text="${'Bot ID: ' + config.getBotId()}">VALUE</p>
+        <p th:text="${'Bot language: ' + config.getBotLanguage()}">VALUE</p>
+        <p th:text="${'Unrelated emote count: ' + config.getUnrelatedEmoteCount()}">VALUE</p>
+        <p th:text="${'Unrelated emote ID: ' + config.getUnrelatedEmoteId()}">VALUE</p>
+        <p th:text="${'Welcome channel ID: ' + config.getWelcomeChannelId()}">VALUE</p>
+        <p th:text="${'Goodbye channel ID: ' + config.getGoodbyeChannelId()}">VALUE</p>
+        <p th:text="${'Log channel ID: ' + config.getLogChannelId()}">VALUE</p>
+        <p th:text="${'Bot info channel ID: ' + config.getBotInfoChannelId()}">VALUE</p>
+        <p th:text="${'Unrelated delete time: ' + config.getUnrelatedDeleteTimeSec() + ' second'}">VALUE</p>
+        <p th:text="${'Function music player: ' + config.isFunctionMusicPlayer()}">VALUE</p>
+        <p th:text="${'Function remembering roles: ' + config.isFunctionRememberingRoles()}">VALUE</p>
+        <p th:text="${'Function dice roller: ' + config.isFunctionDiceRoller()}">VALUE</p>
+        <p th:text="${'Function unrelated deleter: ' + config.isFunctionUnrelatedDeleter()}">VALUE</p>
+
+        <div class="buttonBLOCK" style="padding: 12px 140px 13px; width: 420px">
+            <div class="button-52">
+                <a style="text-decoration: none; color: black"
+                   th:href="@{/configs/{guild_id}/edit(guild_id=${config.getGuildId()})}">EDIT</a>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>
+                    <div class="buttonBLOCK">
+                        <form th:method="DELETE"
+                              th:action="@{/configs/del/{guild_id}(guild_id=${config.getGuildId()})}">
+                            <button class="button-52" role="button" type="submit">
+                                <a>DELETE</a>
+                            </button>
+                        </form>
+                    </div>
+                </th>
+                <th>
+                    <div class="buttonBLOCK">
+                        <button class="button-52" role="button" type="reset">
+                            <a href="/configs" style="text-decoration: none; color: black">BACK</a>
+                        </button>
+                    </div>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>

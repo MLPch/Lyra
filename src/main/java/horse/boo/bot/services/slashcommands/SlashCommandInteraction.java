@@ -4,24 +4,28 @@ import horse.boo.bot.services.slashcommands.functionals.DiceRollerService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class SlashCommandInteraction extends ListenerAdapter {
-    @Autowired
-    SettingsService settingsService;
-    @Autowired
-    FunctionalSwitcher functionalSwitcher;
-    @Autowired
-    MessageAboutUpdateService messageAboutUpdateService;
-    @Autowired
-    EmbedConstructorService embedConstructorService;
-    @Autowired
-    DiceRollerService diceRollerService;
+    final SettingsService settingsService;
+    final FunctionalSwitcher functionalSwitcher;
+    final MessageAboutUpdateService messageAboutUpdateService;
+    final EmbedConstructorService embedConstructorService;
+    final DiceRollerService diceRollerService;
+
+    public SlashCommandInteraction(SettingsService settingsService,
+                                   FunctionalSwitcher functionalSwitcher,
+                                   MessageAboutUpdateService messageAboutUpdateService,
+                                   EmbedConstructorService embedConstructorService,
+                                   DiceRollerService diceRollerService) {
+        this.settingsService = settingsService;
+        this.functionalSwitcher = functionalSwitcher;
+        this.messageAboutUpdateService = messageAboutUpdateService;
+        this.embedConstructorService = embedConstructorService;
+        this.diceRollerService = diceRollerService;
+    }
 
 
     @Override
