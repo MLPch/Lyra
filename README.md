@@ -2,13 +2,16 @@
     Lyra
 </h2>
 <p align="center">
-    Многофункциональный бот для дискорд сервера Perfect Place
+    Многофункциональный бот для дискорд сервера Magic Place и прочих
 </p>
 <p align="center">
     <a href="https://discord.gg/wGPRmEcQ6s">
-        <img src="https://img.shields.io/discord/736277452481101954?color=5865F2&label=PerfectPlace&logoColor=5805F4&style=for-the-badge" alt="Discord">
+        <img src="https://img.shields.io/discord/736277452481101954?color=5865F2&label=MagicPlace&logoColor=5805F4&style=for-the-badge" alt="Discord">
 </p>
-
+<p align="center">
+    <a href="https://discord.gg/Pc22EwfRah">
+        <img src="https://img.shields.io/discord/884107380978249779?color=5865F2&label=Brony_eSports&logoColor=5805F4&style=for-the-badge" alt="Discord">
+</p>
 
 #### Список умений:
 
