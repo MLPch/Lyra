@@ -60,7 +60,7 @@ public class MessageAboutUpdateService extends ListenerAdapter {
             value = getValueForLogs();
         }
         eb.addField(name, value, false);
-        eb.setFooter("Lyra_Heartstrings   Ver: 5.4.6");
+        eb.setFooter("Lyra_Heartstrings   Ver: 5.5.7");
         eb.setImage(guild.getSelfMember().getAvatarUrl());
         eb.setColor(Color.GREEN).build();
         return eb.build();
