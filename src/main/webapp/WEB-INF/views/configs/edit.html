@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style th:inline="text">
+        body {
+            background-image: url("/images/backgrounds/sad_lyra.png");
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/configs/edit.css}"/>
+    <link rel="stylesheet" th:href="@{/css/configs/elements/button52.css}"/>
+    <title>Update config</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/configs/{guild_id}(guild_id=${config.getGuildId()})}"
+      th:object="${config}">
+    <div class="mainBLOCK">
+        <div class="textBLOCK">
+
+            <div class="guild_id">
+                <label for="guild_id">Enter guild ID: </label>
+                <input type="text" th:field="*{guildId}" id="guild_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('guild_id')}" th:errors="*{guildId}">-->
+                <!--                        Guild ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="guild_name">
+                <label for="guild_name">Enter guild name: </label>
+                <input type="text" th:field="*{guildName}" id="guild_name"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('guild_name')}" th:errors="*{guildName}">-->
+                <!--                        Guild name error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="admin_channel_id">
+                <label for="admin_channel_id">Enter admins channel ID: </label>
+                <input type="text" th:field="*{adminChannelId}" id="admin_channel_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('admin_channel_id')}"-->
+                <!--                         th:errors="*{adminChannelId}">Admins channel ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="bot_id">
+                <label for="bot_id">Enter bot ID: </label>
+                <input type="text" th:field="*{botId}" id="bot_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('admin_channel_id')}"-->
+                <!--                         th:errors="*{botId}">Bot ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="bot_language">
+                <label for="bot_language">Enter bot language: </label>
+                <input type="text" th:field="*{botLanguage}" id="bot_language"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('bot_language')}"-->
+                <!--                         th:errors="*{botLanguage}">Bot language error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="unrelated_emote_count">
+                <label for="unrelated_emote_count">Enter unrelated emote count: </label>
+                <input type="text" th:field="*{unrelatedEmoteCount}" id="unrelated_emote_count"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('unrelated_emote_count')}"-->
+                <!--                         th:errors="*{unrelatedEmoteCount}">Unrelated emote count error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="unrelated_emote_id">
+                <label for="unrelated_emote_id">Enter unrelated emote ID: </label>
+                <input type="text" th:field="*{unrelatedEmoteId}" id="unrelated_emote_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('unrelated_emote_id')}"-->
+                <!--                         th:errors="*{unrelatedEmoteId}">Unrelated emote ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="welcome_channel_id">
+                <label for="welcome_channel_id">Enter welcome channel ID: </label>
+                <input type="text" th:field="*{welcomeChannelId}" id="welcome_channel_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('welcome_channel_id')}"-->
+                <!--                         th:errors="*{welcomeChannelId}">Welcome channel ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="goodbye_channel_id">
+                <label for="goodbye_channel_id">Enter goodbye channel ID: </label>
+                <input type="text" th:field="*{goodbyeChannelId}" id="goodbye_channel_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('goodbye_channel_id')}"-->
+                <!--                         th:errors="*{goodbyeChannelId}">Goodbye channel ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="log_channel_id">
+                <label for="log_channel_id">Enter log channel ID: </label>
+                <input type="text" th:field="*{logChannelId}" id="log_channel_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('log_channel_id')}"-->
+                <!--                         th:errors="*{logChannelId}">Log channel ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="bot_info_channel_id">
+                <label for="bot_info_channel_id">Enter bot info channel ID: </label>
+                <input type="text" th:field="*{botInfoChannelId}" id="bot_info_channel_id"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('bot_info_channel_id')}"-->
+                <!--                         th:errors="*{botInfoChannelId}">Bot info channel ID error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="unrelated_delete_time">
+                <label for="unrelated_delete_time">Enter unrelated delete time (Sec): </label>
+                <input type="text" th:field="*{unrelatedDeleteTimeSec}" id="unrelated_delete_time"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('unrelated_delete_time')}"-->
+                <!--                         th:errors="*{unrelatedDeleteTimeSec}">Unrelated delete time error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="function_music_player">
+                <label for="function_music_player">Activate function music player: </label>
+                <input type="checkbox" th:field="*{functionMusicPlayer}" id="function_music_player"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('function_music_player')}"-->
+                <!--                         th:errors="*{functionMusicPlayer}">Function music player error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="function_remembering_roles">
+                <label for="function_remembering_roles">Activate function remembering roles: </label>
+                <input type="checkbox" th:field="*{functionRememberingRoles}" id="function_remembering_roles"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('function_remembering_roles')}"-->
+                <!--                         th:errors="*{functionRememberingRoles}">Function remembering roles error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="function_dice_roller">
+                <label for="function_dice_roller">Activate function dice roller: </label>
+                <input type="checkbox" th:field="*{functionDiceRoller}" id="function_dice_roller"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('function_dice_roller')}"-->
+                <!--                         th:errors="*{functionDiceRoller}">Function dice roller error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+            <div class="function_unrelated_deleter">
+                <label for="function_unrelated_deleter">Activate function unrelated deleter: </label>
+                <input type="checkbox" th:field="*{functionUnrelatedDeleter}" id="function_unrelated_deleter"/>
+                <!--                    <div style="color:red" th:if="${#fields.hasErrors('function_unrelated_deleter')}"-->
+                <!--                         th:errors="*{functionUnrelatedDeleter}">Function unrelated deleter error-->
+                <!--                    </div>-->
+            </div>
+            <br/>
+
+            <button class="button-52" role="button" type="submit">
+                <a style="text-decoration: none; color: black">SAVE</a>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+</body>
+</html>

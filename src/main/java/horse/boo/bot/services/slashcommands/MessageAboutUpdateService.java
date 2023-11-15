@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.util.Objects;
 
 @Component
 public class MessageAboutUpdateService extends ListenerAdapter {
@@ -33,12 +34,12 @@ public class MessageAboutUpdateService extends ListenerAdapter {
         for (ConfigsTable configsTable : allConfigs) {
             if (event.getJDA().getGuildById(configsTable.getGuildId()) != null) {
 
-                event.getJDA().getGuildById(configsTable.getGuildId())
-                        .getTextChannelById(configsTable.getLogChannelId())
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(configsTable.getGuildId()))
+                                .getTextChannelById(configsTable.getLogChannelId()))
                         .sendMessageEmbeds(getMessageEmbed(guild, "log")).queue();
 
-                event.getJDA().getGuildById(configsTable.getGuildId())
-                        .getTextChannelById(configsTable.getBotInfoChannelId())
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(configsTable.getGuildId()))
+                                .getTextChannelById(configsTable.getBotInfoChannelId()))
                         .sendMessageEmbeds(getMessageEmbed(guild, "bot")).queue();
 
             }

@@ -1,0 +1,33 @@
+.textBLOCK {
+    flex-flow: column;
+    color: darkseagreen;
+}
+
+
+.mainBLOCK {
+    width: fit-content;
+    border-radius: 10px;
+    padding: 30px;
+    font-size: 25px;
+    color: white;
+    /*background-color: rgb(21, 24, 30);*/
+    font-family: 'Bebas Neue', sans-serif;
+    margin: 5% auto auto 100px;
+    text-align: center;
+    line-height: 2.2;
+}
+
+input {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    height: 100%;
+    margin: 5px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 40px;
+    color: rgb(86, 131, 112);
+    background-color: white;
+    border-radius: 8px;
+    transition: 1s all;
+}
+

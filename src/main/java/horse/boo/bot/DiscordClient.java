@@ -71,22 +71,22 @@ public class DiscordClient implements CommandLineRunner {
                 .disableCache(CacheFlag.SCHEDULED_EVENTS, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
                 .setCompression(Compression.NONE)
-                .setActivity(Activity.listening("Anthropology"))        // Активность бота
+                .setActivity(Activity.listening("Anthropology"))        // Bot activity
                 .setStatus(OnlineStatus.ONLINE)
                 .build();
 
         jda.addEventListener(
-                messageAboutUpdateService,
-                embedConstructorService,                // Конструктор эмбедов
-                slashCommandInteraction,                // Слеш комманды
-                unrelatedDeleteService,                 // Удаление нерелейтед контента пользователями
-                functionalSwitcher,                     // Отключение функционала удаления по слешу
-                memberLeaveService,                     // Оповещение об уходе участника
-                memberJoinService,                      // Оповещение о новом участнике
-                diceRollerService,                      // Функционал дайсов по слешу
-                botReadyService,                        // Оповещение о запуске бота
-                settingsService,                        // Настройка конфига
-                pingService                             // Проверка работоспособности бота
+                messageAboutUpdateService,              // Sending a message about a new update to all connected guilds
+                embedConstructorService,                // Constructor for changing the contents of embeds
+                slashCommandInteraction,                // Slash commands
+                unrelatedDeleteService,                 // Deleting unreleased content by users
+                functionalSwitcher,                     // Disabling the slash deletion functionality
+                memberLeaveService,                     // Notification of a participant's departure
+                memberJoinService,                      // Notification of a new participant
+                diceRollerService,                      // Slash dice functionality
+                botReadyService,                        // Notification of bot launch
+                settingsService,                        // Setup config
+                pingService                             // Checking the bot's operability
         );
     }
 }

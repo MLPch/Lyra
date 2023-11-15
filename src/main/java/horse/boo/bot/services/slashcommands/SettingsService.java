@@ -37,7 +37,8 @@ public class SettingsService extends ListenerAdapter {
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
-    public SettingsService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public SettingsService(ConfigRepository configRepository,
+                           LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
     }
@@ -88,6 +89,7 @@ public class SettingsService extends ListenerAdapter {
         ConfigsTable config = configRepository.findByGuildId(guild.getIdLong()).orElseGet(() -> new ConfigsTable(guild));
 
         config.setGuildId(guild.getIdLong());
+        config.setGuildName(guild.getName());
         //todo get list of added options and iterate on it will be simpler (?)
         exec(config::setAdminChannelId, ADMIN_CHANNEL, event, eb);
         config.setBotId(guild.getSelfMember().getIdLong());
@@ -125,7 +127,7 @@ public class SettingsService extends ListenerAdapter {
     private void unimplementedFunctional(Options option, @NotNull SlashCommandInteractionEvent event, EmbedBuilder eb) {
         //TODO: Убрать заглушку реализовав функционалы
         if (event.getOption(option.optionName) != null) {
-            if (event.getOption(option.optionName).getAsBoolean())
+            if (Objects.requireNonNull(event.getOption(option.optionName)).getAsBoolean())
                 eb.setAuthor("Attention! At the moment, the functionality " + option.optionName +
                         " does not work. Wait in the next versions.");
 
@@ -136,6 +138,7 @@ public class SettingsService extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         var guild = event.getGuild();
+        assert guild != null;
         ConfigsTable config = configRepository.findByGuildId(guild.getIdLong()).orElseGet(() -> new ConfigsTable(guild));
         String componentId = event.getComponentId();
         Languages lang = null;
@@ -175,13 +178,13 @@ public class SettingsService extends ListenerAdapter {
         log.append("CONFIG UPDATED: \n");
         log.append("#################################### \n");
         log.append("######## \n");
-        log.append("Guild name: ").append(event.getGuild().getName()).append("\n");
+        log.append("Guild name: ").append(Objects.requireNonNull(event.getGuild()).getName()).append("\n");
         log.append("Guild id: ").append(event.getGuild().getIdLong()).append("\n");
         log.append("Guild id: ").append(event.getGuild().getIdLong()).append("\n");
         log.append("Update time: ").append(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC))).append("\n");
         log.append("######## \n");
         log.append("Has been updated: \n");
-        eb.build().getFields().forEach(field -> log.append("*  " + field.getValue() + "\n"));
+        eb.build().getFields().forEach(field -> log.append("*  ").append(field.getValue()).append("\n"));
         log.append("#################################### \n");
         logger.info(log.toString());
     }

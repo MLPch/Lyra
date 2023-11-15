@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style th:inline="text">
+        body {
+            background-image: url("/images/backgrounds/sad_lyra.png");
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/configs/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/configs/elements/button52.css}"/>
+    <title>All configs:</title>
+</head>
+<body>
+<div class="mainBLOCK">
+    <div class="textBLOCK">
+        <div th:each="config : ${all_configs}">
+            <a th:href="@{/configs/{guild_id}(guild_id=${config.getGuildId()})}"
+               th:text="'Guild:' + ${config.getGuildName()}">ConfigSet</a>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="buttonBLOCK" style="margin-left: 5%;">
+    <button class="button-52" role="button" type="button">
+        <a href="/configs/new" style="text-decoration: none; color: black">NEW CONFIG</a>
+    </button>
+</div>
+
+</body>
+</html>

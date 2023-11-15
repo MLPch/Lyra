@@ -3,7 +3,6 @@ package horse.boo.bot.services.slashcommands.functionals;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
-import net.bytebuddy.utility.nullability.MaybeNull;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
@@ -19,6 +18,7 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -164,8 +164,8 @@ public class DiceRollerService extends ListenerAdapter {
         }
     }
 
-    private boolean validCheck(@NotNull Interaction event, @MaybeNull String diceAsString,
-                               @MaybeNull String edgeAsString, @MaybeNull String diceRow) {
+    private boolean validCheck(@NotNull Interaction event, @Nullable String diceAsString,
+                               @Nullable String edgeAsString, @Nullable String diceRow) {
         boolean check = true;
         int dices = 0;
         int edges = 0;
@@ -204,7 +204,7 @@ public class DiceRollerService extends ListenerAdapter {
     }
 
     @NotNull
-    private int[] getTrueDicesAndEdges(@MaybeNull String dicesAsString, @MaybeNull String edgesAsString, @MaybeNull String diceRow) {
+    private int[] getTrueDicesAndEdges(@Nullable String dicesAsString, @Nullable String edgesAsString, @Nullable String diceRow) {
         int dices = 0;
         int edges = 0;
         int[] result = new int[2];

@@ -39,7 +39,8 @@ public class EmbedConstructorService extends ListenerAdapter {
 
     private String embedType = "default";
 
-    public EmbedConstructorService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public EmbedConstructorService(ConfigRepository configRepository,
+                                   LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
     }
@@ -85,13 +86,12 @@ public class EmbedConstructorService extends ListenerAdapter {
             var language = config.getBotLanguage();
 
             StringBuilder logMessage = new StringBuilder();
+            //                    .append(ZonedDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
+            //                            .format(DateTimeFormatter.ofPattern("dd-MM-yyyyVVHH:mm:ss"+ "\n")))
             logMessage.append("The value in the database has been changed!\n")
                     .append("           ###############################################################################\n")
                     .append("           Embed: ").append(embedType).append(" embed\n")
-                    .append("           Date: ")
-//                    .append(ZonedDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
-//                            .format(DateTimeFormatter.ofPattern("dd-MM-yyyyVVHH:mm:ss"+ "\n")))
-                    .append(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "\n")
+                    .append("           Date: ").append(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))).append("\n")
                     .append("           Initiator: ").append(Objects.requireNonNull(event.getMember()).getUser()).append("\n")
                     .append("           ---------------------------------------------\n");
 
@@ -126,9 +126,9 @@ public class EmbedConstructorService extends ListenerAdapter {
             event.reply("""
                     *The embed fields are applied to the currently selected language in the configuration.*
                     *To change the language of the edited embed, use the /select_language command.*
-                    
+                                        
                     __CAREFULLY STUDY THE TEMPLATE BELOW AND SELECT THE DESIRED EMBED__
-                    
+                                        
                     STRING ABOVE
                     """).addEmbeds(getExampleEmbed()).addActionRow(getSelectEmbedTypeMenu()).setEphemeral(true).queue();
         }

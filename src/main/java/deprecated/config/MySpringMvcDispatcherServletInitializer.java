@@ -10,7 +10,7 @@
 //import javax.servlet.*;
 //import java.util.EnumSet;
 //
-//public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+//public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 //    @Override
 //    protected Class<?>[] getRootConfigClasses() {
 //        return null;
@@ -18,7 +18,7 @@
 //
 //    @Override
 //    protected Class<?>[] getServletConfigClasses() {
-//        return new Class[]{SpringJdbcConfig.class};
+//        return new Class[]{SpringConfig.class};
 //    }
 //
 //    @Override

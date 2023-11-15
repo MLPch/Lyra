@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,23 +18,21 @@ public interface LocaleRepository extends JpaRepository<LocalesTable, Long> {
 
     @Transactional
     @Modifying
-    void deleteById(@NotNull Long id);
-
-    boolean existsById(@NotNull Long id);
-
-    Boolean existsByGuildId(Long guildId);
-
-    LocalesTable findByGuildId(Long guildId);
-    LocalesTable findByGuildIdAndLocaleName(Long guildId, String localeName);
-
-    List<LocalesTable> findAllByGuildId(Long guildId);
-
-    List<LocalesTable> getLocalesTableByGuildId(Long guildId);
-
+    void deleteByGuildId(@NotNull Long guild_id);
+    Boolean existsByGuildId(Long guild_id);
+    Optional<LocalesTable> findByGuildId(Long guild_id);
+    List<LocalesTable> findAllByGuildId(Long guild_id);
+    List<LocalesTable> findLocalesTableByGuildId(Long guild_id);
+    List<LocalesTable> getLocalesTableByGuildId(Long guild_id);
     LocalesTable getLocalesTableByLocaleName(String localeName);
+    LocalesTable findByGuildIdAndLocaleName(Long guild_id, String localeName);
+    LocalesTable getLocalesTableByLocaleNameAndGuildId(String localeName, long guild_id);
+    @Query("SELECT locale FROM LocalesTable locale")
+    List<LocalesTable> index();
 
-    LocalesTable getLocalesTableByLocaleNameAndGuildId(String localeName, long guildId);
-
+//    @Modifying
+//    @Query("update LocalesTable lt set lt.guildId = :guild_id where lt.id = :id")
+//    void updateGuildId(long id, LocalesTable locale);
 
     /**
      * @param language   - Язык искомого значения
@@ -51,5 +50,4 @@ public interface LocaleRepository extends JpaRepository<LocalesTable, Long> {
             default -> "";
         };
     }
-
 }

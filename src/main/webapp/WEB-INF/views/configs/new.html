@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style th:inline="text">
+        body {
+            background-image: url("/images/backgrounds/sad_lyra.png");
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/configs/new.css}"/>
+    <link rel="stylesheet" th:href="@{/css/configs/elements/button52.css}"/>
+    <link rel=”icon” href=”favicon.ico” type=”image/x-icon”>
+    <title>New config</title>
+</head>
+<body>
+<div class="mainBLOCK">
+    <div class="textBLOCK">
+        <form th:method="POST" th:action="@{/configs}" th:object="${newConfig}">
+            <table>
+                <tr>
+                    <th>
+                        <div>
+                            <label for="guild_id">Enter guild ID: </label><br/>
+                            <label for="guild_name">Enter guild name: </label><br/>
+                            <label for="admin_channel_id">Enter admins channel ID: </label><br/>
+                            <label for="bot_id">Enter bot ID: </label><br/>
+                            <label for="bot_language">Enter bot language: </label><br/>
+                            <label for="unrelated_emote_count">Enter unrelated emote count: </label><br/>
+                            <label for="unrelated_emote_id">Enter unrelated emote ID: </label><br/>
+                            <label for="welcome_channel_id">Enter welcome channel ID: </label><br/>
+                            <label for="goodbye_channel_id">Enter goodbye channel ID: </label><br/>
+                            <label for="log_channel_id">Enter log channel ID: </label><br/>
+                            <label for="bot_info_channel_id">Enter bot info channel ID: </label><br/>
+                            <label for="unrelated_delete_time">Enter unrelated delete time (Sec): </label><br/>
+                            <label for="function_music_player">Activate function music player: </label><br/>
+                            <label for="function_remembering_roles">Activate function remembering roles: </label><br/>
+                            <label for="function_dice_roller">Activate function dice roller: </label><br/>
+                            <label for="function_unrelated_deleter">Activate function unrelated deleter: </label><br/>
+                        </div>
+                    </th>
+                    <th>
+                        <div>
+                            <input type="text" th:field="*{guildId}" id="guild_id"/><br/>
+                            <input type="text" th:field="*{guildName}" id="guild_name"/><br/>
+                            <input type="text" th:field="*{adminChannelId}" id="admin_channel_id"/><br/>
+                            <input type="text" th:field="*{botId}" id="bot_id"/><br/>
+                            <input type="text" th:field="*{botLanguage}" id="bot_language"/><br/>
+                            <input type="text" th:field="*{unrelatedEmoteCount}" id="unrelated_emote_count"/><br/>
+                            <input type="text" th:field="*{unrelatedEmoteId}" id="unrelated_emote_id"/><br/>
+                            <input type="text" th:field="*{welcomeChannelId}" id="welcome_channel_id"/><br/>
+                            <input type="text" th:field="*{goodbyeChannelId}" id="goodbye_channel_id"/><br/>
+                            <input type="text" th:field="*{logChannelId}" id="log_channel_id"/><br/>
+                            <input type="text" th:field="*{botInfoChannelId}" id="bot_info_channel_id"/><br/>
+                            <input type="text" th:field="*{unrelatedDeleteTimeSec}" id="unrelated_delete_time"/><br/>
+                            <input type="checkbox" th:field="*{functionMusicPlayer}" id="function_music_player"/><br/>
+                            <input type="checkbox" th:field="*{functionRememberingRoles}"
+                                   id="function_remembering_roles"/><br/>
+                            <input type="checkbox" th:field="*{functionDiceRoller}" id="function_dice_roller"/><br/>
+                            <input type="checkbox" th:field="*{functionUnrelatedDeleter}"
+                                   id="function_unrelated_deleter"/><br/>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="buttonBLOCK">
+                            <button class="button-52" role="button" type="submit">SAVE</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="buttonBLOCK">
+                            <button class="button-52" role="button" type="reset">
+                                <a href="/configs" style="text-decoration: none; color: black">BACK</a>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

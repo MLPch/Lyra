@@ -27,7 +27,8 @@ public class MemberLeaveService extends ListenerAdapter {
     private final ConfigRepository configRepository;
     private final LocaleRepository localeRepository;
 
-    public MemberLeaveService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public MemberLeaveService(ConfigRepository configRepository,
+                              LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
     }

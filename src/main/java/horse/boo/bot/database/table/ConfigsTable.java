@@ -1,10 +1,10 @@
 package horse.boo.bot.database.table;
 
 import horse.boo.bot.database.enums.Languages;
+import jakarta.persistence.*;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = "config")
@@ -16,6 +16,9 @@ public class ConfigsTable {
 
     @Column(name = "guild_id")
     private Long guildId = 0L;
+
+    @Column(name = "guild_name")
+    private String guildName;
 
     @Column(name = "admin_channel_id")
     private Long adminChannelId;
@@ -66,6 +69,7 @@ public class ConfigsTable {
 
     public ConfigsTable(@NotNull Guild guild) {
         this.setGuildId(guild.getIdLong());                                           //ID гильдии
+        this.setGuildName(guild.getName());                                           //ID гильдии
         this.setAdminChannelId(guild.getDefaultChannel().getIdLong());                //ID админского канала
         this.setBotId(guild.getSelfMember().getIdLong());                             //ID бота
         this.setBotLanguage(Languages.ENGLISH.getLanguage());                         //язык по дефолту
@@ -97,6 +101,14 @@ public class ConfigsTable {
 
     public void setGuildId(Long guildId) {
         this.guildId = guildId;
+    }
+
+    public String getGuildName() {
+        return guildName;
+    }
+
+    public void setGuildName(String guildName) {
+        this.guildName = guildName;
     }
 
     public Long getAdminChannelId() {
@@ -210,13 +222,12 @@ public class ConfigsTable {
     public void setFunctionUnrelatedDeleter(boolean functionUnrelatedDeleter) {
         this.functionUnrelatedDeleter = functionUnrelatedDeleter;
     }
-
-
     @Override
     public String toString() {
         return "ConfigsTable{" +
                 "id=" + id +
                 ", guildId=" + guildId +
+                ", guildName=" + guildName +
                 ", adminChannelId=" + adminChannelId +
                 ", botId=" + botId +
                 ", botLanguage='" + botLanguage + '\'' +

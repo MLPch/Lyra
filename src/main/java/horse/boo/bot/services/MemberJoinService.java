@@ -28,7 +28,8 @@ public class MemberJoinService extends ListenerAdapter {
     private final LocaleRepository localeRepository;
 
 
-    public MemberJoinService(ConfigRepository configRepository, LocaleRepository localeRepository) {
+    public MemberJoinService(ConfigRepository configRepository,
+                             LocaleRepository localeRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
     }

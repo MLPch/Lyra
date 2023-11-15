@@ -33,7 +33,9 @@ public class UnrelatedDeleteService extends ListenerAdapter {
     private final IgnoreChannelRepository ignoreChannelRepository;
 
 
-    public UnrelatedDeleteService(ConfigRepository configRepository, LocaleRepository localeRepository, IgnoreChannelRepository ignoreChannelRepository) {
+    public UnrelatedDeleteService(ConfigRepository configRepository,
+                                  LocaleRepository localeRepository,
+                                  IgnoreChannelRepository ignoreChannelRepository) {
         this.configRepository = configRepository;
         this.localeRepository = localeRepository;
         this.ignoreChannelRepository = ignoreChannelRepository;
