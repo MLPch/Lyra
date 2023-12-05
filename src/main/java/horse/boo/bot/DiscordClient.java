@@ -3,6 +3,7 @@ package horse.boo.bot;
 import horse.boo.bot.services.BotReadyService;
 import horse.boo.bot.services.MemberJoinService;
 import horse.boo.bot.services.MemberLeaveService;
+import horse.boo.bot.services.WednesdayPostingService;
 import horse.boo.bot.services.slashcommands.*;
 import horse.boo.bot.services.slashcommands.functionals.DiceRollerService;
 import horse.boo.bot.services.slashcommands.functionals.UnrelatedDeleteService;
@@ -27,6 +28,7 @@ public class DiscordClient implements CommandLineRunner {
     private final MessageAboutUpdateService messageAboutUpdateService;
     private final EmbedConstructorService embedConstructorService;
     private final SlashCommandInteraction slashCommandInteraction;
+    private final WednesdayPostingService wednesdayPostingService;
     private final UnrelatedDeleteService unrelatedDeleteService;
     private final FunctionalSwitcher functionalSwitcher;
     private final MemberLeaveService memberLeaveService;
@@ -42,6 +44,7 @@ public class DiscordClient implements CommandLineRunner {
             MessageAboutUpdateService messageAboutUpdateService,
             EmbedConstructorService embedConstructorService,
             SlashCommandInteraction slashCommandInteraction,
+            WednesdayPostingService wednesdayPostingService,
             UnrelatedDeleteService unrelatedDeleteService,
             FunctionalSwitcher functionalSwitcher,
             MemberLeaveService memberLeaveService,
@@ -53,6 +56,7 @@ public class DiscordClient implements CommandLineRunner {
         this.messageAboutUpdateService = messageAboutUpdateService;
         this.embedConstructorService = embedConstructorService;
         this.slashCommandInteraction = slashCommandInteraction;
+        this.wednesdayPostingService = wednesdayPostingService;
         this.unrelatedDeleteService = unrelatedDeleteService;
         this.functionalSwitcher = functionalSwitcher;
         this.memberLeaveService = memberLeaveService;
@@ -79,6 +83,7 @@ public class DiscordClient implements CommandLineRunner {
                 messageAboutUpdateService,              // Sending a message about a new update to all connected guilds
                 embedConstructorService,                // Constructor for changing the contents of embeds
                 slashCommandInteraction,                // Slash commands
+                wednesdayPostingService,                // It is Wednesday, my dudes
                 unrelatedDeleteService,                 // Deleting unreleased content by users
                 functionalSwitcher,                     // Disabling the slash deletion functionality
                 memberLeaveService,                     // Notification of a participant's departure

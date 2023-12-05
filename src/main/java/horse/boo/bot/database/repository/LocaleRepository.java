@@ -30,14 +30,10 @@ public interface LocaleRepository extends JpaRepository<LocalesTable, Long> {
     @Query("SELECT locale FROM LocalesTable locale")
     List<LocalesTable> index();
 
-//    @Modifying
-//    @Query("update LocalesTable lt set lt.guildId = :guild_id where lt.id = :id")
-//    void updateGuildId(long id, LocalesTable locale);
-
     /**
      * @param language   - Язык искомого значения
      * @param guild      - Гильдия для которой происходит поиск значения
-     * @param localeName - Название или тип значения
+     * @param localeName - Название и тип значения
      * @return - Строка с заранее записанным в БД значением соответствующая параметру language.
      */
     default String getValueByLanguageAndLocaleNameAndGuild(@NotNull String language, String localeName, @NotNull Guild guild) {
