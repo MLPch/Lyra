@@ -4,10 +4,11 @@ import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -59,13 +60,13 @@ public class MemberJoinService extends ListenerAdapter {
 
             stopped = false;
         }
-        guild.getTextChannelById(config.getLogChannelId()).sendMessage("**__A new user has joined:__**" +
+        config.sendInLogChannel(guild,"**__A new user has joined:__**" +
                 "\nName: " + user.getName() +
                 "\nID: " + user.getId() +
                 "\nMention: " + user.getAsMention() +
                 "\nDate of registration: " + user.getTimeCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC)) +
                 "\nDate of the event: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC)) +
-                "\nAvatar: " + user.getAvatarUrl()).complete();
+                "\nAvatar: " + user.getAvatarUrl());
         logger.info("A new user has joined: " + user + " in " + guild);
     }
 

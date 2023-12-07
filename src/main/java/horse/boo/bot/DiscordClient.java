@@ -7,6 +7,8 @@ import horse.boo.bot.services.WednesdayPostingService;
 import horse.boo.bot.services.slashcommands.*;
 import horse.boo.bot.services.slashcommands.functionals.DiceRollerService;
 import horse.boo.bot.services.slashcommands.functionals.UnrelatedDeleteService;
+import horse.boo.bot.services.slashcommands.interractions.ButtonInteraction;
+import horse.boo.bot.services.slashcommands.interractions.SlashCommandInteraction;
 import horse.boo.bot.services.utils.PingService;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -27,9 +29,9 @@ public class DiscordClient implements CommandLineRunner {
     private String token;
     private final MessageAboutUpdateService messageAboutUpdateService;
     private final EmbedConstructorService embedConstructorService;
-    private final SlashCommandInteraction slashCommandInteraction;
     private final WednesdayPostingService wednesdayPostingService;
     private final UnrelatedDeleteService unrelatedDeleteService;
+    private final LanguageSelectService languageSelectService;
     private final FunctionalSwitcher functionalSwitcher;
     private final MemberLeaveService memberLeaveService;
     private final MemberJoinService memberJoinService;
@@ -37,6 +39,8 @@ public class DiscordClient implements CommandLineRunner {
     private final BotReadyService botReadyService;
     private final SettingsService settingsService;
     private final PingService pingService;
+    private final SlashCommandInteraction slashCommandInteraction;
+    private final ButtonInteraction buttonInteraction;
 
     public static String TYPE = "default";
 
@@ -46,8 +50,10 @@ public class DiscordClient implements CommandLineRunner {
             SlashCommandInteraction slashCommandInteraction,
             WednesdayPostingService wednesdayPostingService,
             UnrelatedDeleteService unrelatedDeleteService,
+            LanguageSelectService languageSelectService,
             FunctionalSwitcher functionalSwitcher,
             MemberLeaveService memberLeaveService,
+            ButtonInteraction buttonInteraction,
             MemberJoinService memberJoinService,
             DiceRollerService diceRollerService,
             BotReadyService botReadyService,
@@ -58,8 +64,10 @@ public class DiscordClient implements CommandLineRunner {
         this.slashCommandInteraction = slashCommandInteraction;
         this.wednesdayPostingService = wednesdayPostingService;
         this.unrelatedDeleteService = unrelatedDeleteService;
+        this.languageSelectService = languageSelectService;
         this.functionalSwitcher = functionalSwitcher;
         this.memberLeaveService = memberLeaveService;
+        this.buttonInteraction = buttonInteraction;
         this.memberJoinService = memberJoinService;
         this.diceRollerService = diceRollerService;
         this.botReadyService = botReadyService;
@@ -85,8 +93,10 @@ public class DiscordClient implements CommandLineRunner {
                 slashCommandInteraction,                // Slash commands
                 wednesdayPostingService,                // It is Wednesday, my dudes
                 unrelatedDeleteService,                 // Deleting unreleased content by users
+                languageSelectService,                  //
                 functionalSwitcher,                     // Disabling the slash deletion functionality
                 memberLeaveService,                     // Notification of a participant's departure
+                buttonInteraction,                      //
                 memberJoinService,                      // Notification of a new participant
                 diceRollerService,                      // Slash dice functionality
                 botReadyService,                        // Notification of bot launch

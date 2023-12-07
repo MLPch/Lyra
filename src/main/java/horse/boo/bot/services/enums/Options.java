@@ -27,7 +27,7 @@ public enum Options {
     ROLL_THE_DICE("The dice-throwing functionality is set to __**%%**__", "dice_roller", OptionMapping::getAsBoolean),
     UNRELATED_REMOVER("The unrelated removal functionality is set to __**%%**__", "unrelated_deleter", OptionMapping::getAsBoolean);
 
-    //todo replace "set to" with something meaningful
+    //TODO: replace "set to" with something meaningful
 
     public final String optionName;
     public final String text;

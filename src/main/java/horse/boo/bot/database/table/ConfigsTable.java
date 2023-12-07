@@ -244,4 +244,7 @@ public class ConfigsTable {
                 ", functionUnrelatedDeleter=" + functionUnrelatedDeleter +
                 '}';
     }
+    public void sendInLogChannel(@NotNull Guild guild, String logMessage){
+        guild.getTextChannelById(this.getLogChannelId()).sendMessage(logMessage).queue();
+    }
 }
