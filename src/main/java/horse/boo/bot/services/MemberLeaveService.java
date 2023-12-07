@@ -59,12 +59,12 @@ public class MemberLeaveService extends ListenerAdapter {
 
             stopped = false;
         }
-        guild.getTextChannelById(config.getLogChannelId()).sendMessage("**__The user has left the guild:__**" +
+        config.sendInLogChannel(guild,"**__The user has left the guild:__**" +
                 "\nName: " + user.getName() +
                 "\nID: " + user.getId() +
                 "\nMention: " + user.getAsMention() +
                 "\nAvatar: " + user.getAvatarUrl() +
-                "\nDate: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC))).complete();
+                "\nDate: " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneOffset.UTC)));
         logger.info("The user has left the guild: " + user + " from " + guild);
     }
 

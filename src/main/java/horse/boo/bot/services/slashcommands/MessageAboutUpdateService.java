@@ -53,14 +53,14 @@ public class MessageAboutUpdateService extends ListenerAdapter {
     @NotNull
     private static MessageEmbed getMessageEmbed(Guild guild, @NotNull String embedType) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Last Update: 24.11.2023");
+        eb.setTitle("Last Update: 6.12.2023");
         String name = "What's new:";
         String value = getValueForUsers();
         if (embedType.equals("log")) {
             value = getValueForLogs();
         }
         eb.addField(name, value, false);
-        eb.setFooter("Lyra_Heartstrings   Ver: 5.5.7");
+        eb.setFooter("Lyra_Heartstrings   Ver: 5.6.8");
         eb.setImage(guild.getSelfMember().getAvatarUrl());
         eb.setColor(Color.GREEN).build();
         return eb.build();
@@ -70,9 +70,9 @@ public class MessageAboutUpdateService extends ListenerAdapter {
     @Contract(pure = true)
     private static String getValueForLogs() {
         return """
-                * Fix old bugs
-                * Add new bugs
-                * Added new update command for admins (The "send_update" command sends update messages to the information channel from the bot and to the logs channel)
+                * The "/gatekeeper" functionality has been added, it allows the server administrator to create a message for users with two Subscribe-Unsubscribe buttons that grant or revoke access to the selected channel
+                * It is Wednesday, my dudes
+                * Added new bugs
                 """;
     }
 
@@ -80,9 +80,9 @@ public class MessageAboutUpdateService extends ListenerAdapter {
     @Contract(pure = true)
     private static String getValueForUsers() {
         return """
-                * Fix old bugs
-                * Add new bugs
-                * Added functionality to capture the government of Africa! =)
+                * The "/gatekeeper" functionality has been added, it allows the server administrator to create a message for users with two Subscribe-Unsubscribe buttons that grant or revoke access to the selected channel
+                * It is Wednesday, my dudes
+                * Added new bugs
                 """;
     }
 }

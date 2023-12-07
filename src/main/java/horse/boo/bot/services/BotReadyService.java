@@ -89,6 +89,11 @@ public class BotReadyService extends ListenerAdapter {
                 Commands.slash("constructor", "Embeds constructor").addSubcommands()
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
 
+                Commands.slash("gatekeeper", "Create a gatekeeper for the selected channel")
+                        .addOption(CHANNEL, "gatekeeper_channel", "Select the channel that needs a gatekeeper", true)
+                        .addOption(STRING, "gatekeeper_description", "Add a description of the channel", false)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR)),
+
                 Commands.slash("roll", "Enter a value or press Enter to select")
                         .addOption(STRING, "dice", "From 1d2 to 100d100", false)
                         .setDefaultPermissions(enabledFor(Permission.VIEW_CHANNEL)),

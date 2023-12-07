@@ -43,26 +43,7 @@ public class SettingsService extends ListenerAdapter {
         this.localeRepository = localeRepository;
     }
 
-    /**
-     * @param event - Срабатывает при вызове команды "languageSelect".
-     *              Возвращает эмбед с кнопками для выбора языка видимый для всех.
-     */
-    public void languageSelect(@NotNull SlashCommandInteractionEvent event) {
 
-
-        MessageEmbed eb = new EmbedBuilder()
-                .setAuthor("Welcome to the Setup wizard!")
-                .addField("To continue - please select a language.", "There are currently 4 languages available.", true)
-                .setColor(Color.magenta)
-                .build();
-
-        event.reply("").setEmbeds(eb).addActionRow(
-                        Button.danger("language.english", "English"),
-                        Button.danger("language.russian", "Russian"),
-                        Button.danger("language.ukrainian", "Ukrainian"),
-                        Button.danger("language.china", "China"))
-                .queue();
-    }
 
 
     private <T> void exec(Consumer<T> configSetup, Options adminChannel, SlashCommandInteractionEvent event, EmbedBuilder eb) {
@@ -134,44 +115,6 @@ public class SettingsService extends ListenerAdapter {
         }
     }
 
-
-    @Override
-    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        var guild = event.getGuild();
-        assert guild != null;
-        ConfigsTable config = configRepository.findByGuildId(guild.getIdLong()).orElseGet(() -> new ConfigsTable(guild));
-        String componentId = event.getComponentId();
-        Languages lang = null;
-        EmbedBuilder eb = new EmbedBuilder();
-        switch (componentId) {
-            case "language.english" -> {
-                eb.setTitle("The English language of the customizer is selected.").setColor(Color.blue);
-                lang = Languages.ENGLISH;
-            }
-            case "language.russian" -> {
-                eb.setTitle("Выбран русский язык настройщика.").setColor(Color.green);
-                lang = Languages.RUSSIAN;
-            }
-            case "language.ukrainian" -> {
-                eb.setTitle("Обрано українську мову настроювача.").setColor(Color.yellow);
-                lang = Languages.UKRAINE;
-            }
-            case "language.china" -> {
-                eb.setTitle("选择定制器的中文语言。").setColor(Color.red);
-                lang = Languages.CHINA;
-            }
-            default -> {
-                return;
-            }
-
-        }
-        event.getMessage().delete().queue();
-        event.getChannel().sendMessageEmbeds(eb.build()).delay(7, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-        config.setBotLanguage(lang.getLanguage());
-        event.deferEdit().queue();
-        configRepository.save(config);
-        logger.info("The bot language is set in the guild (" + guild.getName() + "(" + guild.getIdLong() + ")): " + lang);
-    }
 
     private void setupLog(@NotNull SlashCommandInteractionEvent event, @NotNull EmbedBuilder eb) {
         StringBuilder log = new StringBuilder();
