@@ -1,7 +1,6 @@
 package horse.boo.bot.services.slashcommands.functionals;
 
 import horse.boo.bot.database.repository.ConfigRepository;
-import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,11 +28,9 @@ public class DiceRollerService extends ListenerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(DiceRollerService.class);
     private final ConfigRepository configRepository;
-    private final LocaleRepository localeRepository;
 
-    public DiceRollerService(ConfigRepository configRepository, LocaleRepository localeRepository) {
-        this.configRepository = configRepository;
-        this.localeRepository = localeRepository;
+    public DiceRollerService(ConfigRepository configRepository) {
+        this.configRepository = configRepository;;
     }
 
     public void roll(@NotNull SlashCommandInteractionEvent event, String diceRow) {

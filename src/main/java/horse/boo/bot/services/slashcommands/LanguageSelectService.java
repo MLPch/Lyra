@@ -29,7 +29,7 @@ public class LanguageSelectService extends ListenerAdapter {
                         Button.danger("language.english", "English"),
                         Button.danger("language.russian", "Russian"),
                         Button.danger("language.ukrainian", "Ukrainian"),
-                        Button.danger("language.china", "China"))
+                        Button.danger("language.chinese", "Chinese"))
                 .queue();
     }
 }

@@ -5,7 +5,7 @@ public enum Languages {
     ENGLISH("english"),
     RUSSIAN("russian"),
     UKRAINE("ukraine"),
-    CHINA("china");
+    CHINESE("chinese");
 
     final String languageType;
 

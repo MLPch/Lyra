@@ -1,7 +1,6 @@
 package horse.boo.bot.database.repository;
 
 import horse.boo.bot.database.table.ConfigsTable;
-import horse.boo.bot.database.table.LocalesTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

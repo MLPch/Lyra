@@ -1,7 +1,7 @@
 //package horse.boo.bot.web.controllers;
 //
-//import horse.boo.bot.database.repository.LocaleRepository;
-//import horse.boo.bot.database.table.LocalesTable;
+//import deprecated.repository.LocaleOldRepository;
+//import deprecated.database.table.LocalesOldTable;
 //import org.jetbrains.annotations.NotNull;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -17,10 +17,10 @@
 //
 //
 //
-//    private final LocaleRepository localeRepository;
+//    private final LocaleOldRepository localeRepository;
 //
 //    @Autowired
-//    public LocaleController(LocaleRepository localeRepository) {
+//    public LocaleController(LocaleOldRepository localeRepository) {
 //        this.localeRepository = localeRepository;
 //    }
 //
@@ -37,12 +37,12 @@
 //    }
 //
 //    @GetMapping("/new")
-//    public String newLocale(@ModelAttribute("locale") LocalesTable locale) {
+//    public String newLocale(@ModelAttribute("locale") LocalesOldTable locale) {
 //        return "locales/new";
 //    }
 //
 //    @PostMapping()
-//    public String create(@ModelAttribute("locale") LocalesTable locale, @NotNull BindingResult bindingResult) {
+//    public String create(@ModelAttribute("locale") LocalesOldTable locale, @NotNull BindingResult bindingResult) {
 //        if (bindingResult.hasErrors()) return "locales/new";
 //
 //        localeRepository.save(locale);
@@ -56,15 +56,15 @@
 //    }
 //
 //    @PostMapping("/{guild_id}")
-//    public String update(@ModelAttribute("locale") LocalesTable locale, @NotNull BindingResult bindingResult,
+//    public String update(@ModelAttribute("locale") LocalesOldTable locale, @NotNull BindingResult bindingResult,
 //                         @PathVariable("guild_id") long guild_id) {
 //
 //        if (bindingResult.hasErrors()) return "locales/edit";
 //
-//        Optional<LocalesTable> tableEntity = localeRepository.findByGuildId(guild_id);
+//        Optional<LocalesOldTable> tableEntity = localeRepository.findByGuildId(guild_id);
 //
 //        if (tableEntity.isPresent()) {
-//            LocalesTable localeEntity = tableEntity.get();
+//            LocalesOldTable localeEntity = tableEntity.get();
 //            localeEntity.setLocaleName(locale.getLocaleName());
 //            localeEntity.setLocaleEN(locale.getLocaleEN());
 //            localeEntity.setLocaleRU(locale.getLocaleRU());
