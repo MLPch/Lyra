@@ -1,18 +1,12 @@
 package horse.boo.bot.services.slashcommands;
 
 
-import horse.boo.bot.database.enums.Languages;
 import horse.boo.bot.database.repository.ConfigRepository;
-import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
 import horse.boo.bot.services.enums.Options;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +17,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -35,12 +28,9 @@ public class SettingsService extends ListenerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(SettingsService.class);
     private final ConfigRepository configRepository;
-    private final LocaleRepository localeRepository;
 
-    public SettingsService(ConfigRepository configRepository,
-                           LocaleRepository localeRepository) {
-        this.configRepository = configRepository;
-        this.localeRepository = localeRepository;
+    public SettingsService(ConfigRepository configRepository) {
+        this.configRepository = configRepository;;
     }
 
 

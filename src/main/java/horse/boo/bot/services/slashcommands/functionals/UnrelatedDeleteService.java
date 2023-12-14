@@ -1,9 +1,12 @@
 package horse.boo.bot.services.slashcommands.functionals;
 
+import horse.boo.bot.database.enums.FieldType;
+import horse.boo.bot.database.enums.Languages;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.IgnoreChannelRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
 import horse.boo.bot.database.table.ConfigsTable;
+import horse.boo.bot.database.table.LocalesTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -20,8 +23,12 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static horse.boo.bot.DiscordClient.TYPE;
+import static horse.boo.bot.database.enums.FieldType.*;
+import static horse.boo.bot.database.enums.LocaleType.UNRELATED;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
@@ -50,8 +57,7 @@ public class UnrelatedDeleteService extends ListenerAdapter {
         Integer delaySeconds = configRepository.getConfigByGuildId(guild.getIdLong()).getUnrelatedDeleteTimeSec();
         boolean permissionToDelete = ignoreChannelRepository.existsByChannelId(event.getChannel().getIdLong());
 
-        if (config.isFunctionUnrelatedDeleter() &&
-                !permissionToDelete) {
+        if (config.isFunctionUnrelatedDeleter() && !permissionToDelete) {
             long unrelatedEmoteId = config.getUnrelatedEmoteId();
             long unrelatedEmoteCount = config.getUnrelatedEmoteCount();
             Message msg = event.getChannel().retrieveMessageById(event.getMessageId()).complete();
@@ -62,16 +68,15 @@ public class UnrelatedDeleteService extends ListenerAdapter {
                 var lme = unrelatedMessageEmbed("forLogs", guild, language, author, msg);
 
                 if (react.getEmoji().getType() != Emoji.Type.UNICODE &&
-                        react.getEmoji().asCustom().getIdLong() == unrelatedEmoteId &&
-                        (!(author.isBot())) &&
-                        react.getCount() >= unrelatedEmoteCount) {
+                    react.getEmoji().asCustom().getIdLong() == unrelatedEmoteId &&
+                    (!(author.isBot())) &&
+                    react.getCount() >= unrelatedEmoteCount) {
+                    event.getChannel().retrieveMessageById(event.getMessageId());
 
                     msg.delete().queue();
 
-
-                    event.getChannel().sendMessage(localeRepository.getValueByLanguageAndLocaleNameAndGuild(
-                                    language, "unrelated_" + TYPE + "_stringAbove", guild) +
-                                    author.getAsMention() + "!\n" + "*удаление через __" + delaySeconds + "__ секунд*")
+                    event.getChannel().sendMessage(getEmbedValueFromDB(guild, EMBED_STRING_ABOVE) +
+                                                   author.getAsMention() + "!\n" + "*удаление через __" + delaySeconds + "__ секунд*")
                             .setEmbeds(ume).delay(delaySeconds, SECONDS).flatMap(Message::delete).queue();
 
                     if (author.hasPrivateChannel()) {
@@ -88,10 +93,10 @@ public class UnrelatedDeleteService extends ListenerAdapter {
     private MessageEmbed unrelatedMessageEmbed(String titleType, Guild guild, String language, @NotNull User author, Message msg) {
         String img = author.getEffectiveAvatarUrl();
 
-        String title = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_title", guild);
-        String fieldName = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_fieldName", guild);
-        String fieldValue = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_fieldValue", guild);
-        String footerText = localeRepository.getValueByLanguageAndLocaleNameAndGuild(language, "unrelated_" + TYPE + "_footerText", guild);
+        String title = getEmbedValueFromDB(guild, EMBED_TITLE);
+        String fieldName = getEmbedValueFromDB(guild, EMBED_FIELD_NAME);
+        String fieldValue = getEmbedValueFromDB(guild, EMBED_FIELD_VALUE);
+        String footerText = getEmbedValueFromDB(guild, EMBED_FOOTER_TEXT);
 
         if (!author.isBot()) {
             try {
@@ -153,4 +158,115 @@ public class UnrelatedDeleteService extends ListenerAdapter {
         return eb.build();
     }
 
+    private String getEmbedValueFromDB(@NotNull Guild guild, @NotNull FieldType fieldType) {
+        ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
+        return localeRepository.getByGuildIdAndLanguageAndLocaleTypeAndModeTypeAndFieldType(
+                guild.getIdLong(),
+                config.getBotLanguage(),
+                UNRELATED.name(),
+                TYPE,
+                fieldType.getFieldType()).getValue();
+    }
+
+    public java.util.List<LocalesTable> unrelatedInitLocalesTable(Guild guild, String mode) {
+        List<LocalesTable> localesTableList = new ArrayList<>();
+        for (FieldType fieldT : FieldType.values()) {
+            switch (fieldT) {
+                case EMBED_STRING_ABOVE -> {
+                    for (Languages language : Languages.values()) {
+                        LocalesTable initUnrelatedLocale = getLocalesNewTable(guild, mode, fieldT, language);
+                        switch (language) {
+                            case ENGLISH -> {
+                                initUnrelatedLocale.setValue("OOPS!");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case RUSSIAN, UKRAINE -> {
+                                initUnrelatedLocale.setValue("Опа!");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case CHINESE -> {
+                                initUnrelatedLocale.setValue("哎呀！");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                        }
+                    }
+                }
+                case EMBED_TITLE -> {
+                    for (Languages language : Languages.values()) {
+                        LocalesTable initUnrelatedLocale = getLocalesNewTable(guild, mode, fieldT, language);
+                        switch (language) {
+                            case ENGLISH -> {
+                                initUnrelatedLocale.setValue("Your message was deleted. " +
+                                                             "Next time, be a sweetheart and don't do this!");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case RUSSIAN -> {
+                                initUnrelatedLocale.setValue("Твоё сообщение удалили. " +
+                                                             "В следующий раз будь лапочкой и не пости такое!");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case UKRAINE -> {
+                                initUnrelatedLocale.setValue("Твоє повідомлення видалили. " +
+                                                             "Наступного разу будь лапочкою і не пости таке!");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case CHINESE -> {
+                                initUnrelatedLocale.setValue("你的信息被删除了。 " +
+                                                             "下次，做个心上人，别这样！");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                        }
+                    }
+                }
+                case EMBED_FIELD_NAME, EMBED_FIELD_VALUE -> {
+                    for (Languages language : Languages.values()) {
+                        LocalesTable initUnrelatedLocale = getLocalesNewTable(guild, mode, fieldT, language);
+                        switch (language) {
+                            case ENGLISH, RUSSIAN, UKRAINE, CHINESE -> {
+                                initUnrelatedLocale.setValue(" ");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                        }
+                    }
+                }
+
+                case EMBED_FOOTER_TEXT -> {
+                    for (Languages language : Languages.values()) {
+                        LocalesTable initUnrelatedLocale = getLocalesNewTable(guild, mode, fieldT, language);
+                        switch (language) {
+                            case ENGLISH -> {
+                                initUnrelatedLocale.setValue("The message has been cleaned up ");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case RUSSIAN -> {
+                                initUnrelatedLocale.setValue("Сообщение подчищено ");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case UKRAINE -> {
+                                initUnrelatedLocale.setValue("Повідомлення підчищено ");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                            case CHINESE -> {
+                                initUnrelatedLocale.setValue("该消息已被清理 ");
+                                localesTableList.add(initUnrelatedLocale);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return localesTableList;
+    }
+
+    @NotNull
+    private static LocalesTable getLocalesNewTable(@NotNull Guild guild, String mode, @NotNull FieldType fieldT, @NotNull Languages language) {
+        LocalesTable initUnrelatedLocale = new LocalesTable();
+        initUnrelatedLocale.setGuildName(guild.getName());
+        initUnrelatedLocale.setGuildId(guild.getIdLong());
+        initUnrelatedLocale.setModeType(mode);
+        initUnrelatedLocale.setLocaleType(UNRELATED.name());
+        initUnrelatedLocale.setFieldType(fieldT.getFieldType());
+        initUnrelatedLocale.setLanguage(language.getLanguage());
+        return initUnrelatedLocale;
+    }
 }

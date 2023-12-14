@@ -69,9 +69,9 @@ public class ButtonInteraction extends ListenerAdapter {
                 lang = Languages.UKRAINE;
                 langUpdateAndSendMessage(event, config, lang, eb, guild);
             }
-            case "language.china" -> {
+            case "language.chinese" -> {
                 eb.setTitle("选择定制器的中文语言。").setColor(Color.red);
-                lang = Languages.CHINA;
+                lang = Languages.CHINESE;
                 langUpdateAndSendMessage(event, config, lang, eb, guild);
             }
             case "subscribe.channel" -> {
@@ -83,16 +83,15 @@ public class ButtonInteraction extends ListenerAdapter {
         }
     }
 
-    private void unsubscribeMember(@NotNull ButtonInteractionEvent event, Guild guild,
-                                   ConfigsTable config, long mentionSubscribeChannelId) {
+    private void unsubscribeMember(@NotNull ButtonInteractionEvent event, @NotNull Guild guild,
+                                   @NotNull ConfigsTable config, long mentionSubscribeChannelId) {
         guild.getTextChannelById(mentionSubscribeChannelId)
                 .getPermissionContainer()
                 .upsertPermissionOverride(event.getMember())
                 .setPermissions(null, textChannelUserPermission).queue();
 
-        event.reply("You have been successfully unsubscribed from the %s channel!"
-                .formatted(guild.getTextChannelById(mentionSubscribeChannelId).getAsMention()))
-                .setEphemeral(true).queue();
+        event.reply("You have been successfully unsubscribed from the channel!" + "\n"
+                + guild.getTextChannelById(mentionSubscribeChannelId).getAsMention()).setEphemeral(true).queue();
 
         config.sendInLogChannel(guild, "The %s has been unsubscribed from %s"
                 .formatted(event.getMember().getAsMention(),
@@ -103,16 +102,15 @@ public class ButtonInteraction extends ListenerAdapter {
                         guild.getTextChannelById(mentionSubscribeChannelId).toString(), guild.toString()));
     }
 
-    private void subscribeMember(@NotNull ButtonInteractionEvent event, Guild guild,
-                                 ConfigsTable config, long mentionSubscribeChannelId) {
+    private void subscribeMember(@NotNull ButtonInteractionEvent event, @NotNull Guild guild,
+                                 @NotNull ConfigsTable config, long mentionSubscribeChannelId) {
         guild.getTextChannelById(mentionSubscribeChannelId)
                 .getPermissionContainer()
                 .upsertPermissionOverride(event.getMember())
                 .setPermissions(textChannelUserPermission, null).queue();
 
-        event.reply("You have been successfully subscribed to the %s channel!"
-                .formatted(guild.getTextChannelById(mentionSubscribeChannelId).getAsMention()))
-                .setEphemeral(true).queue();
+        event.reply("You have been successfully subscribed to the channel!" + "\n"
+                + guild.getTextChannelById(mentionSubscribeChannelId).getAsMention()).setEphemeral(true).queue();
 
         config.sendInLogChannel(guild, "The %s has been subscribed to %s"
                 .formatted(event.getMember().getAsMention(),

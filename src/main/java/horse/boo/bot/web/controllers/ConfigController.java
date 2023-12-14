@@ -1,18 +1,14 @@
 package horse.boo.bot.web.controllers;
 
 
-import horse.boo.bot.database.enums.Languages;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.table.ConfigsTable;
-import horse.boo.bot.database.table.LocalesTable;
-import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PatchExchange;
 
 import java.util.Optional;
 
