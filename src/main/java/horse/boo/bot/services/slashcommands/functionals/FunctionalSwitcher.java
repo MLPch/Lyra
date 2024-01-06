@@ -1,4 +1,4 @@
-package horse.boo.bot.services.slashcommands;
+package horse.boo.bot.services.slashcommands.functionals;
 
 import horse.boo.bot.database.repository.IgnoreChannelRepository;
 import horse.boo.bot.database.table.IgnoreChannelTable;

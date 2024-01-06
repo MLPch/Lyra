@@ -1,7 +1,6 @@
 package horse.boo.bot.services.slashcommands.functionals;
 
 import horse.boo.bot.database.repository.ConfigRepository;
-import horse.boo.bot.database.table.ConfigsTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class DiceRollerService extends ListenerAdapter {
@@ -30,17 +30,22 @@ public class DiceRollerService extends ListenerAdapter {
     private final ConfigRepository configRepository;
 
     public DiceRollerService(ConfigRepository configRepository) {
-        this.configRepository = configRepository;;
+        this.configRepository = configRepository;
+        ;
     }
 
     public void roll(@NotNull SlashCommandInteractionEvent event, String diceRow) {
         Guild guild = event.getGuild();
-        ConfigsTable config = configRepository.getConfigByGuildId(guild.getIdLong());
-        if (config.isFunctionUnrelatedDeleter() && configRepository.getConfigByGuildId(event.getGuild().getIdLong()).isFunctionDiceRoller()) {
+        if (configRepository.getConfigByGuildId(guild.getIdLong()).isFunctionDiceRoller()) {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(Color.WHITE);
             if (diceRow.contains("custom")) {
-
+                AtomicLong count = new AtomicLong();
+                event.getGuild().getTextChannels().forEach(
+                        channel -> channel.getHistory().getRetrievedHistory().forEach(
+                                message -> {
+                                    count.getAndIncrement();
+                                }));
                 eb.setTitle("Select the desired dice or click \"My dice\" to calculate your variant");
 
                 event.replyEmbeds(eb.build())

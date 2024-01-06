@@ -1,6 +1,5 @@
 package horse.boo.bot.services;
 
-import horse.boo.bot.database.enums.LocaleType;
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.repository.IgnoreChannelRepository;
 import horse.boo.bot.database.repository.LocaleRepository;
@@ -33,7 +32,7 @@ public class BotReadyService extends ListenerAdapter {
     private final ConfigRepository configRepository;
 
     private final LocaleRepository localeRepository;
-    private  final IgnoreChannelRepository ignoreChannelRepository;
+    private final IgnoreChannelRepository ignoreChannelRepository;
 
     public BotReadyService(ConfigRepository configRepository,
                            LocaleRepository localeRepository,
@@ -58,10 +57,8 @@ public class BotReadyService extends ListenerAdapter {
             logger.info("Joined a new guild! Name: " + guild.getName());
             logger.info("Saved the default config: " + config);
         }
-        if (!localeRepository.existsByGuildId(guild.getIdLong())) {
-            addInitLocalesInDB(guild);
-        }
 
+        addInitLocalesInDB(guild);
     }
 
     /**
@@ -117,26 +114,24 @@ public class BotReadyService extends ListenerAdapter {
 
         ).queue();
 
-        if (!localeRepository.existsByGuildId(guild.getIdLong())){
-            addInitLocalesInDB(guild);
-        }
-        System.out.println(LocaleType.GREETINGS);
+        addInitLocalesInDB(guild);
     }
 
     private void addInitLocalesInDB(Guild guild) {
-        MemberJoinService a = new MemberJoinService(configRepository, localeRepository);
-        MemberLeaveService b = new MemberLeaveService(configRepository, localeRepository);
-        UnrelatedDeleteService c = new UnrelatedDeleteService(configRepository, localeRepository, ignoreChannelRepository);
-        ChannelGatekeeperService d = new ChannelGatekeeperService();
-        EmbedConstructorService e = new EmbedConstructorService(configRepository, localeRepository);
+        if (!localeRepository.existsByGuildId(guild.getIdLong())) {
+            MemberJoinService a = new MemberJoinService(configRepository, localeRepository);
+            MemberLeaveService b = new MemberLeaveService(configRepository, localeRepository);
+            UnrelatedDeleteService c = new UnrelatedDeleteService(configRepository, localeRepository, ignoreChannelRepository);
+            ChannelGatekeeperService d = new ChannelGatekeeperService();
+            EmbedConstructorService e = new EmbedConstructorService(configRepository, localeRepository);
 
-        List<LocalesTable> allInitLocales = new ArrayList<>();
-        allInitLocales.addAll(a.greetingInitLocalesTable(guild, "default"));
-        allInitLocales.addAll(b.farewellInitLocalesTable(guild, "default"));
-        allInitLocales.addAll(c.unrelatedInitLocalesTable(guild, "default"));
-        allInitLocales.addAll(d.gatekeeperInitLocalesTable(guild, "default"));
-        allInitLocales.addAll(e.constructorInitLocalesTable(guild, "default"));
-        localeRepository.saveAll(allInitLocales);
+            List<LocalesTable> allInitLocales = new ArrayList<>();
+            allInitLocales.addAll(a.greetingInitLocalesTable(guild, "default"));
+            allInitLocales.addAll(b.farewellInitLocalesTable(guild, "default"));
+            allInitLocales.addAll(c.unrelatedInitLocalesTable(guild, "default"));
+            allInitLocales.addAll(d.gatekeeperInitLocalesTable(guild, "default"));
+            allInitLocales.addAll(e.constructorInitLocalesTable(guild, "default"));
+            localeRepository.saveAll(allInitLocales);
+        }
     }
-
 }
