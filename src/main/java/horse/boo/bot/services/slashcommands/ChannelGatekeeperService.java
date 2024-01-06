@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static horse.boo.bot.database.enums.LocaleType.GATEKEEPER;
@@ -39,7 +40,7 @@ public class ChannelGatekeeperService extends ListenerAdapter {
         for (FieldType fieldT : FieldType.values()) {
             switch (fieldT) {
                 case GATEKEEPER_SUBSCRIBE_EPHEMERAL -> {
-                    for (Languages language : Languages.values()) {
+                    Arrays.stream(Languages.values()).forEach(language -> {
                         LocalesTable initGatekeeperLocale = getLocalesNewTable(guild, mode, fieldT, language);
                         switch (language) {
                             case ENGLISH -> {
@@ -59,10 +60,10 @@ public class ChannelGatekeeperService extends ListenerAdapter {
                                 localesTableList.add(initGatekeeperLocale);
                             }
                         }
-                    }
+                    });
                 }
                 case GATEKEEPER_UNSUBSCRIBE_EPHEMERAL -> {
-                    for (Languages language : Languages.values()) {
+                    Arrays.stream(Languages.values()).forEach(language -> {
                         LocalesTable initGatekeeperLocale = getLocalesNewTable(guild, mode, fieldT, language);
                         switch (language) {
                             case ENGLISH -> {
@@ -82,7 +83,7 @@ public class ChannelGatekeeperService extends ListenerAdapter {
                                 localesTableList.add(initGatekeeperLocale);
                             }
                         }
-                    }
+                    });
                 }
             }
         }

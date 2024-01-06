@@ -1,4 +1,4 @@
-package horse.boo.bot.services.slashcommands;
+package horse.boo.bot.services.utils;
 
 import horse.boo.bot.database.repository.ConfigRepository;
 import horse.boo.bot.database.table.ConfigsTable;

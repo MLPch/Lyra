@@ -36,3 +36,4 @@ build/
 /.github/workflows/dependency-review.yml
 /mvnw
 /mvnw.cmd
+/src/main/java/deprecated/

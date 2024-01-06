@@ -2,6 +2,9 @@ package horse.boo.bot.services.slashcommands.interractions;
 
 import horse.boo.bot.services.slashcommands.*;
 import horse.boo.bot.services.slashcommands.functionals.DiceRollerService;
+import horse.boo.bot.services.slashcommands.functionals.FunctionalSwitcher;
+import horse.boo.bot.services.slashcommands.functionals.player.*;
+import horse.boo.bot.services.utils.MessageAboutUpdateService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +28,7 @@ public class SlashCommandInteraction extends ListenerAdapter {
             LanguageSelectService languageSelectService,
             FunctionalSwitcher functionalSwitcher,
             DiceRollerService diceRollerService,
-            SettingsService settingsService
-    ) {
+            SettingsService settingsService) {
         this.messageAboutUpdateService = messageAboutUpdateService;
         this.channelGatekeeperService = channelGatekeeperService;
         this.embedConstructorService = embedConstructorService;
@@ -59,7 +61,6 @@ public class SlashCommandInteraction extends ListenerAdapter {
             case "constructor" -> embedConstructorService.constructor(event);
             case "select_language" -> languageSelectService.languageSelect(event);
             case "setup" -> settingsService.setup(event);
-            default -> event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
         }
 
     }
